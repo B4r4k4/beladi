@@ -2423,7 +2423,7 @@ TRANSLATIONS.fr = frTypo({
   };
   const QUIZ = { perRegion: 3, passStars: 5 };
   const MAX_STARS = QUIZ.perRegion * 3;   // كل سؤال: 3 نجوم من أول محاولة، 2 من الثانية، 1 من الثالثة
-  const freshState = () => ({ age: null, done: {}, muted: false, lang: 'ar' });
+  const freshState = () => ({ age: null, done: {}, muted: false, lang: 'ar', asked: [] });
   let state = freshState();
   (function restore() {
     const s = Store.load();
@@ -2431,6 +2431,7 @@ TRANSLATIONS.fr = frTypo({
     if (AGES.some(a => a.id === s.age)) state.age = s.age;
     state.muted = !!s.muted;
     if (LANGS.indexOf(s.lang) >= 0) state.lang = s.lang;
+    if (Array.isArray(s.asked)) state.asked = s.asked.filter(x => typeof x === 'string');
     if (s.done && typeof s.done === 'object') {
       Object.keys(s.done).forEach(id => {
         const n = Number(s.done[id]);
@@ -2553,7 +2554,7 @@ TRANSLATIONS.fr = frTypo({
         </div>
       </div>`);
     on('#no', () => { Sound.play('tap'); closeOverlay(); });
-    on('#yes', () => { const muted = state.muted, lang = state.lang; Store.clear(); state = freshState(); state.muted = muted; state.lang = lang; save(); asked.clear(); viewTrip = null; Sound.play('tap'); showStart(); });
+    on('#yes', () => { const muted = state.muted, lang = state.lang; Store.clear(); state = freshState(); state.muted = muted; state.lang = lang; state.asked = Array.from(asked); save(); viewTrip = null; Sound.play('tap'); showStart(); });
   }
 
   /* =================== خريطة الدولة =================== */
@@ -2833,27 +2834,34 @@ TRANSLATIONS.fr = frTypo({
   }
 
   /* =================== السؤال =================== */
-  const asked = new Set();   // حتى لا يتكرر السؤال في الجلسة نفسها
+  // الأسئلة التي رآها اللاعب تُحفظ مع تقدّمه، فلا تتكرر عليه حتى في جلسة لاحقة أو بعد «البدء من جديد».
+  // لا يعود السؤال إلا بعد أن يرى اللاعب كل الأسئلة المتاحة له في تلك المحطة.
+  const asked = new Set(state.asked);
+  const markAsked = id => { asked.add(id); state.asked = Array.from(asked); save(); };
 
-  function pickQuestion(regionId) {
+  function pickQuestion(regionId, taken) {
     const age = state.age || AGES[0].id;
     const tagAll = (list, label, prefix) => (list || []).map((q, i) => Object.assign({}, q, { id: prefix + i, label: label }));
     const own = tagAll((P.regions[regionId].questions || {})[age], P.historyLabel || P.countryName, regionId + ':' + age + ':');
     const shared = Object.keys(S).reduce((a, k) => a.concat(tagAll(S[k][age], S[k].label, k + ':' + age + ':')), []);
-    const fresh = l => l.filter(q => !asked.has(q.id) && q.a && q.a.length >= 2);
+    const ok = q => q.a && q.a.length >= 2 && !(taken || []).some(t => t.id === q.id);
+    const fresh = l => l.filter(q => ok(q) && !asked.has(q.id));
     const first = Math.random() < 0.5 ? own : shared, second = first === own ? shared : own;
     let pool = fresh(first);
     if (!pool.length) pool = fresh(second);
-    if (!pool.length) { asked.clear(); pool = fresh(own.concat(shared)); }
+    if (!pool.length) {   // رأى اللاعب كل الأسئلة المتاحة هنا: نبدأ دورة جديدة لهذه الأسئلة وحدها
+      own.concat(shared).forEach(q => asked.delete(q.id));
+      pool = own.concat(shared).filter(ok);
+    }
     if (!pool.length) return null;
-    const q = pick(pool); asked.add(q.id); return q;
+    const q = pick(pool); markAsked(q.id); return q;
   }
 
 
   function openQuestion(regionId) {
     const r = P.regions[regionId];
     const qs = [];
-    for (let i = 0; i < QUIZ.perRegion; i++) { const q = pickQuestion(regionId); if (q && qs.indexOf(q) < 0) qs.push(q); }
+    for (let i = 0; i < QUIZ.perRegion; i++) { const q = pickQuestion(regionId, qs); if (q) qs.push(q); }
     if (!qs.length) { finishRegion(regionId, MAX_STARS); return; }   // لا توجد أسئلة: نفتح البطاقة مباشرة
     const need = Math.min(QUIZ.passStars, qs.length * 3);
     let idx = 0, total = 0;
