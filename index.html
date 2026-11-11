@@ -92,6 +92,10 @@ button{font:inherit;color:inherit;border:0;cursor:pointer;touch-action:manipulat
 .map-scroll::-webkit-scrollbar{display:none}
 .map-scroll.drag{cursor:grabbing}
 .map-in{position:relative;width:100%;height:100%;direction:rtl}
+[dir=ltr] .map-in{direction:ltr}
+[lang=fr] .station .name{white-space:normal;max-width:104px;text-align:center;line-height:1.2;padding:1px 9px}
+.langs{display:inline-flex;align-items:center;gap:2px;flex-wrap:wrap;justify-content:center}
+.lang-opt.on{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;opacity:1}
 .road{fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .road-dash{fill:none;stroke:var(--gray-dark);stroke-width:4;stroke-dasharray:2 12;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .road-done{fill:none;stroke:var(--primary);stroke-width:4;stroke-dasharray:2 12;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
@@ -1079,26 +1083,1319 @@ const SHARED_QUESTIONS = {
 };
 
 /* =====================================================================
+   2-ب) الترجمة الإنجليزية  —  TRANSLATIONS.en
+   تُدمج فوق COUNTRY_PACK و SHARED_QUESTIONS عند اختيار English، بنفس البنية والترتيب.
+   - المصفوفات تُدمج عنصراً بعنصر (السؤال الأول هنا = السؤال الأول في العربية...).
+   - الإجابة الصحيحة دائماً أول عنصر في a كما في العربية.
+   - ما لا يُترجم هنا (الصور، الألوان، الإحداثيات، review) يُؤخذ من الأصل العربي.
+   - towns: أسماء المدن على الطرق (المفتاح هو الاسم العربي في roads).
+   - credits: ترجمة الكلمات العربية في حقوق الصور.
+   ===================================================================== */
+const TRANSLATIONS = {
+  en: {
+    pack: {
+      gameName: 'Beladi',
+      countryName: 'Sudan',
+      historyLabel: 'Sudan’s History',
+      numerals: 'latn',
+      guide: { name: 'Saqr the Secretary Bird' },
+      medal: { name: 'Secretary Bird Medal' },
+      trips: [
+        { name: 'Central Journey',  badge: { name: 'Central Badge' } },
+        { name: 'Eastern Journey',  badge: { name: 'Eastern Badge' } },
+        { name: 'Northern Journey', badge: { name: 'Northern Badge' } },
+        { name: 'Kordofan Journey', badge: { name: 'Kordofan Badge' } },
+        { name: 'Darfur Journey',   badge: { name: 'Darfur Badge' } }
+      ],
+      roads: {
+        'khartoum>jazeera':    { name: 'Khartoum – Wad Madani Road' },
+        'jazeera>sennar':      { name: 'Wad Madani – Sennar Road' },
+        'sennar>whitenile':    { name: 'Sennar – Kosti Road' },
+        'whitenile>bluenile':  { name: 'Kosti – Sennar – Ed Damazin Road' },
+        'gedaref>kassala':     { name: 'Gedaref – Kassala Road' },
+        'kassala>redsea':      { name: 'Kassala – Port Sudan Road' },
+        'rivernile>northern':  { name: 'Atbara – Merowe Road, then the Northern Highway' },
+        'nkordofan>skordofan': { name: 'El Obeid – Dilling – Kadugli Road' },
+        'skordofan>wkordofan': { name: 'Kadugli – El Fula Road' },
+        'edarfur>sdarfur':     { name: 'Ed Daein – Nyala Road' },
+        'sdarfur>cdarfur':     { name: 'Nyala – Zalingei Road' },
+        'cdarfur>wdarfur':     { name: 'Zalingei – El Geneina Road' },
+        'wdarfur>ndarfur':     { name: 'El Geneina – El Fasher Road' }
+      },
+      towns: {
+        'سوبا': 'Soba', 'الكاملين': 'Al-Kamlin', 'الحصاحيصا': 'Hasaheisa', 'سنار': 'Sennar', 'سنجة': 'Singa',
+        'ربك': 'Rabak', 'كوستي': 'Kosti', 'الدمازين': 'Ed Damazin', 'الشُّوَك': 'Es Showak', 'هيا': 'Haiya',
+        'سنكات': 'Sinkat', 'عطبرة': 'Atbara', 'مروي': 'Merowe', 'الدبة': 'Ed Debba', 'الدلنج': 'Dilling',
+        'لقاوة': 'Lagawa', 'كاس': 'Kas', 'كبكابية': 'Kabkabiya'
+      },
+      credits: { 'حكومة السودان': 'Government of Sudan', 'ملكية عامة': 'Public domain', 'محسن الفكي': 'Mohsen Elfaki' },
+      map: { unit: 'State' },
+      regions: {
+        khartoum: {
+          name: 'Khartoum',
+          card: {
+            capital: 'Khartoum (also the capital of the whole of Sudan)',
+            cities: 'Khartoum, Omdurman, Khartoum North (Bahri)',
+            landmarks: 'Al-Mogran (where the two Niles meet), the Tomb of Imam al-Mahdi, the Khalifa’s House, the National Museum, and Tuti Island',
+            history: 'Khartoum began in 1821 as a small military camp where the two Niles meet, and later became the capital of the country. In 1885 the army of Imam al-Mahdi entered the city, and he moved the capital to Omdurman on the opposite bank of the Nile. On 1 January 1956, the flag of independent Sudan was raised in Khartoum.',
+            gallery: [
+              { title: 'The Tomb of Imam al-Mahdi in Omdurman',
+                note: 'Imam Muhammad Ahmad al-Mahdi was buried here in 1885. The first dome was destroyed in the war of 1898 and rebuilt about fifty years later.' },
+              { title: 'The Sudan National Museum in Khartoum',
+                note: 'Opened in 1971 to preserve treasures from the kingdoms of Kush, Meroë and Nubia. Its garden holds ancient temples that were moved stone by stone from the north before the High Dam’s lake flooded them.' },
+              { title: 'The historic Khalifa’s House in Omdurman',
+                note: 'It was the home of Khalifa Abdallahi al-Ta’ishi, who ruled the country after Imam al-Mahdi. The house became a museum in 1928, and the Mahdi’s dome can be seen behind it.' },
+              { title: 'Sunset over the White Nile in Khartoum',
+                note: 'The White Nile travels thousands of kilometres from the great lakes of central Africa to Khartoum, where it meets the Blue Nile at Al-Mogran.' },
+              { title: 'Sunut Forest at the meeting of the two Niles, Khartoum',
+                note: 'A nature reserve since 1939, where sunut (acacia) trees grow on the bank of the White Nile and many migrating birds stop over in winter.' }
+            ],
+            fact: 'In Khartoum, the Blue Nile meets the White Nile at a place called “Al-Mogran” — and from there, the River Nile begins its long journey north!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the capital of Sudan?', a: ['Khartoum', 'Wad Madani', 'Rabak'], hint: 'It’s the city where we’re standing on the map right now!' },
+              { q: 'Which two rivers meet in Khartoum?', a: ['The Blue Nile and the White Nile', 'The Tigris and the Euphrates', 'The Red Nile and the Green Nile'], hint: 'They’re named after two colours: one like the sky and one like milk.' }
+            ],
+            older: [
+              { q: 'In which year did Sudan gain its independence?', a: ['1956', '1925', '1989'], hint: 'We celebrate Independence Day on 1 January — it happened in the mid-1950s.' },
+              { q: 'What is the place where the two Niles meet in Khartoum called?', a: ['Al-Mogran', 'The Dam', 'The Cataract'], hint: 'Its name comes from an Arabic word meaning “joining together”.' }
+            ]
+          }
+        },
+        jazeera: {
+          name: 'Gezira',
+          card: {
+            capital: 'Wad Madani',
+            cities: 'Wad Madani, Hasaheisa, Managil, Rufaa',
+            landmarks: 'The Gezira Scheme and its great canals, and the banks of the Blue Nile at Wad Madani',
+            history: 'The Gezira Scheme opened in 1925 together with the Sennar Dam. Its water flows through the canals by the natural slope of the land alone, without any pumps. In Rufaa, Sheikh Babiker Badri founded Sudan’s first school for girls in 1907.',
+            gallery: [
+              { title: 'The Gezira Scheme seen from space',
+                note: 'A satellite image from 2006. The neat green lines are the scheme’s fields and canals, stretching between the Blue Nile and the White Nile.' },
+              { title: 'Cotton at the market in Wad Madani',
+                note: 'Gezira cotton is one of Sudan’s most famous crops. It is used to make cloth, mattresses and pillows like the ones in the picture.' },
+              { title: 'Wad Madani and the Blue Nile from above',
+                note: 'Wad Madani is the capital of Gezira State and lies on the west bank of the Blue Nile.' },
+              { title: 'The embankments of the Gezira Scheme’s main canal',
+                note: 'These earth mounds are the canal banks, with the water flowing between them. The main canal starts at the Sennar Dam and runs north to water the fields.' }
+            ],
+            fact: 'The Gezira Scheme is one of the largest irrigated farming projects in the world, and cotton has been grown there for about a hundred years!'
+          },
+          questions: {
+            young: [
+              { q: 'Which famous white crop is grown in the Gezira Scheme?', a: ['Cotton', 'Bananas', 'Rice'], hint: 'We make clothes from it — it’s soft and white, like a cloud.' },
+              { q: 'What is the capital of Gezira State?', a: ['Wad Madani', 'Singa', 'Ed Damazin'], hint: 'Its name begins with the word “Wad”.' }
+            ],
+            older: [
+              { q: 'On the bank of which river does Wad Madani lie?', a: ['The Blue Nile', 'The White Nile', 'The Atbara River'], hint: 'The river named after the colour of the sky.' },
+              { q: 'Where does the irrigation water for the Gezira Scheme come from?', a: ['The Sennar Dam', 'The Red Sea', 'Only from wells'], hint: 'From a dam on the Blue Nile, in the neighbouring state to the south.' }
+            ]
+          }
+        },
+        sennar: {
+          name: 'Sennar',
+          card: {
+            capital: 'Singa',
+            cities: 'Singa, Sennar, Dinder, Es Suki',
+            landmarks: 'The Sennar Dam, the ruins of Sennar (capital of the Blue Sultanate), the Jebel Moya archaeological site, and Dinder National Park',
+            history: 'In 1504, Amara Dunqas, leader of the Funj, formed an alliance with Abdallah Jamma, leader of the Abdallab. Together they founded the “Blue Sultanate” and made Sennar its capital. The sultanate ruled for more than 300 years, until it came to an end in 1821.',
+            gallery: [
+              { title: 'The Sennar Dam on the Blue Nile',
+                note: 'Completed in 1925, it is one of the oldest dams in Sudan. It raises the level of the Blue Nile so the water can flow into the canals of the Gezira Scheme.' },
+              { title: 'The Great Mosque of Sennar, built in the days of the Blue Sultanate (drawing from 1829)',
+                note: 'Drawn by an English traveller who visited Sennar eight years after the sultanate fell. Thanks to him, we know what the mosque and its tall minaret looked like.' },
+              { title: 'Excavations at Jebel Moya (photo from over 100 years ago)',
+                note: 'Between 1911 and 1914, thousands of workers dug here and found traces of people who lived thousands of years ago. The excavators even used kites to photograph the site from the air!' },
+              { title: 'The Dinder River seen from a plane',
+                note: 'The river rises in the mountains of Ethiopia and flows through Dinder National Park — created in 1935 to protect wild animals — before joining the Blue Nile.' }
+            ],
+            fact: 'The city of Sennar was the capital of the “Blue Sultanate” for more than 300 years! And in 1924, the skull of a human who lived over 100,000 years ago was discovered in Singa.'
+          },
+          questions: {
+            young: [
+              { q: 'Sennar was once the capital of an old kingdom. What was it called?', a: ['The Blue Sultanate', 'The Green Sultanate', 'The Kingdom of the Sea'], hint: 'It’s named after the colour of the sky.' },
+              { q: 'On which river was the Sennar Dam built?', a: ['The Blue Nile', 'The White Nile', 'The Atbara River'], hint: 'It’s the river that comes from the east, and its name is a colour.' }
+            ],
+            older: [
+              { q: 'What is the famous wildlife park in Sennar State called?', a: ['Dinder National Park', 'Radom National Park', 'Sanganeb Marine Park'], hint: 'Its name starts with the letter D.' },
+              { q: 'What is the capital of Sennar State today?', a: ['Singa', 'Sennar', 'Rabak'], hint: 'Careful! It isn’t the city of Sennar itself, but another city whose name also begins with S.' }
+            ]
+          }
+        },
+        whitenile: {
+          name: 'White Nile',
+          card: {
+            capital: 'Rabak',
+            cities: 'Rabak, Kosti, Ed Dueim, El Jebelein',
+            landmarks: 'Aba Island, the Kosti bridge over the White Nile, the Kenana sugar factory, and the Bakht er Ruda Institute',
+            history: 'On Aba Island, Muhammad Ahmad al-Mahdi proclaimed his mission in 1881, and the Mahdist revolution began from there. In Ed Dueim, the Bakht er Ruda Institute was founded in 1934; it trained generations of teachers and wrote the curriculum for Sudan’s schools.',
+            gallery: [
+              { title: 'Boats on the bank of the White Nile at Kosti',
+                note: 'Kosti is an important river port. Steamers set off from here heading south along the White Nile, and the river route meets the railway line here.' },
+              { title: 'Kosti from the air in 1936 (historic photo)',
+                note: 'A rare photo taken from a passenger plane about 90 years ago. The town is said to be named after a Greek trader called “Kosti” who lived there.' },
+              { title: 'The chimney of the Kenana sugar factory',
+                note: 'The factory began production in 1981. It turns the sugar cane grown around it into sugar, which is sent to cities across Sudan and to other countries.' },
+              { title: 'A sugar-cane harvester at Kenana',
+                note: 'This huge machine cuts the tall cane stalks in the fields. The cane is then taken to the factory, where the sugar is extracted.' },
+              { title: 'A steamer on the White Nile at Rabak',
+                note: 'Rabak is the capital of White Nile State. It lies on the east bank of the Nile, opposite the town of Kosti.' }
+            ],
+            fact: 'White Nile State is home to the Kenana factory, which began production in 1981 and is one of the largest sugar factories in Africa!'
+          },
+          questions: {
+            young: [
+              { q: 'What is made at the Kenana factory?', a: ['Sugar', 'Cars', 'Paper'], hint: 'Something sweet that we put in our tea.' },
+              { q: 'What is the capital of White Nile State?', a: ['Rabak', 'Khartoum', 'Wad Madani'], hint: 'Its name is short and starts with the letter R.' }
+            ],
+            older: [
+              { q: 'From which place on the White Nile did the Mahdist revolution begin?', a: ['Aba Island', 'Tuti Island', 'Suakin Island'], hint: 'An island in the White Nile with a very short name — just three letters!' },
+              { q: 'On which river does the town of Kosti lie?', a: ['The White Nile', 'The Blue Nile', 'The Atbara River'], hint: 'The name of the state tells you!' }
+            ]
+          }
+        },
+        bluenile: {
+          name: 'Blue Nile',
+          card: {
+            capital: 'Ed Damazin',
+            cities: 'Ed Damazin, Er Roseires, Kurmuk',
+            landmarks: 'The Roseires Dam, the Ingessana Hills, and giant baobab trees',
+            history: 'Since ancient times, the Fazughli area of this state has been famous for its gold — which is why the army of Muhammad Ali Pasha came here in 1821. After independence, the Roseires Dam was built in 1966, and in 2013 it was raised so it could store more water.',
+            gallery: [
+              { title: 'The Roseires Dam on the Blue Nile',
+                note: 'Opened in 1966, it is one of Sudan’s largest sources of electricity, and it stores water to irrigate farming projects.' },
+              { title: 'A giant baobab tree south of Roseires',
+                note: 'The baobab stores water in its enormous trunk and can live for hundreds of years. In the past, people kept rainwater inside its hollow trunks.' },
+              { title: 'A view of Ed Damazin',
+                note: 'Ed Damazin is the capital of Blue Nile State. It lies near the Roseires Dam, in an area with plenty of rain and trees.' },
+              { title: 'The Roseires reservoir from space',
+                note: 'A satellite image from 2012. The long brown strip is the water of the Blue Nile, held back behind the dam.' }
+            ],
+            fact: 'The Blue Nile enters Sudan through this state, flowing down from the mountains of Ethiopia — and the Roseires Dam was built here to generate electricity!'
+          },
+          questions: {
+            young: [
+              { q: 'From which neighbouring country does the Blue Nile flow into Sudan?', a: ['Ethiopia', 'Libya', 'Saudi Arabia'], hint: 'A mountainous country to the east of Sudan.' },
+              { q: 'What is the big dam near Ed Damazin called?', a: ['The Roseires Dam', 'The Khartoum Dam', 'The Sea Dam'], hint: 'Its name starts with the letter R.' }
+            ],
+            older: [
+              { q: 'From which lake does the Blue Nile flow?', a: ['Lake Tana', 'Lake Victoria', 'Lake Chad'], hint: 'A lake in the Ethiopian highlands with a short, four-letter name.' },
+              { q: 'Besides storing water, what does the Roseires Dam produce?', a: ['Electricity', 'Sugar', 'Cotton'], hint: 'We use it to light the lamps in our homes.' }
+            ]
+          }
+        },
+        gedaref: {
+          name: 'Gedaref',
+          card: {
+            capital: 'Gedaref',
+            cities: 'Gedaref, El Fau, Gallabat, El Hawata',
+            landmarks: 'Gedaref’s great crop market, vast fields of sorghum and sesame, and the Rahad agricultural scheme',
+            history: 'Mechanised farming in Sudan began in Gedaref in the mid-1940s, when tractors started ploughing its wide clay plains, watered by the rains of the kharif (the rainy season).',
+            fact: 'Gedaref is nicknamed “Sudan’s breadbasket” because it grows huge amounts of sorghum, which we use to make kisra and aseeda!'
+          },
+          questions: {
+            young: [
+              { q: 'Which crop is Gedaref famous for — the one we use to make kisra?', a: ['Sorghum', 'Cotton', 'Sugar cane'], hint: 'Small grains that are ground into flour.' },
+              { q: 'What is the capital of Gedaref State?', a: ['Gedaref', 'Kassala', 'Singa'], hint: 'It has the same name as the state!' }
+            ],
+            older: [
+              { q: 'What is Gedaref State nicknamed?', a: ['Sudan’s breadbasket', 'Bride of the Sea', 'Bride of the Sands'], hint: 'A nickname to do with food and crops.' },
+              { q: 'Which country borders Gedaref State to the east?', a: ['Ethiopia', 'Chad', 'Egypt'], hint: 'The country the Blue Nile comes from.' }
+            ]
+          }
+        },
+        kassala: {
+          name: 'Kassala',
+          card: {
+            capital: 'Kassala',
+            cities: 'Kassala, New Halfa, Khashm el Girba, Aroma',
+            landmarks: 'The Taka Mountains, Toteil Spring, the Gash River, the Khashm el Girba Dam, and the Sayed al-Hassan Mosque in Khatmiyya',
+            history: 'In the 1960s, the lake of the High Dam flooded the town of Wadi Halfa in the far north. Its people moved to Kassala, where a new town called “New Halfa” was built for them, along with the Khashm el Girba Dam on the Atbara River to water their farms.',
+            fact: 'The Taka Mountains in Kassala look like giant stone fingers! And the people of Kassala say that anyone who drinks from Toteil Spring is sure to come back.'
+          },
+          questions: {
+            young: [
+              { q: 'What are the famous mountains in Kassala called?', a: ['The Taka Mountains', 'The Nuba Mountains', 'Jebel Marra'], hint: 'Their name starts with the letter T.' },
+              { q: 'What are Kassala’s orchards famous for?', a: ['Fruit', 'Snow', 'Fish'], hint: 'Something sweet we eat, like bananas and guavas.' }
+            ],
+            older: [
+              { q: 'Why was the town of New Halfa built?', a: ['For the people of Wadi Halfa, after the High Dam’s lake flooded their town', 'To be a port on the sea', 'To be the capital of Sudan'], hint: 'Its name reminds you of an old town in the far north.' },
+              { q: 'What is the seasonal river that flows past the city of Kassala?', a: ['The Gash', 'The Dinder', 'The Rahad'], hint: 'Its name is short — just four letters — and it floods in the rainy season.' }
+            ]
+          }
+        },
+        redsea: {
+          name: 'Red Sea',
+          card: {
+            capital: 'Port Sudan',
+            cities: 'Port Sudan, Suakin, Tokar, Haiya',
+            landmarks: 'Port Sudan harbour, the historic island of Suakin, Sanganeb Marine National Park, and the Red Sea Hills with the Erkowit summer resort',
+            history: 'For hundreds of years, Suakin was Sudan’s great port, used by pilgrims and traders, and its houses were built from coral stone. Then work on Port Sudan began in 1905, and it became the country’s main port.',
+            fact: 'Near Port Sudan, the Red Sea is home to colourful coral reefs, fish and dolphins — and in 2016, the Sanganeb and Dungonab marine parks became World Heritage Sites!'
+          },
+          questions: {
+            young: [
+              { q: 'On which sea does the city of Port Sudan lie?', a: ['The Red Sea', 'The White Sea', 'The Black Sea'], hint: 'The name of the state tells you!' },
+              { q: 'What is the capital of Red Sea State?', a: ['Port Sudan', 'Suakin', 'Kassala'], hint: 'Its name contains the word “Sudan”.' }
+            ],
+            older: [
+              { q: 'What kind of stone were the old houses of Suakin built from?', a: ['Coral', 'Marble', 'Red brick'], hint: 'It grows on the seabed and forms colourful reefs.' },
+              { q: 'What is Sudan’s main port today?', a: ['Port Sudan', 'Suakin', 'Kosti'], hint: 'Work on building it began in 1905.' }
+            ]
+          }
+        },
+        rivernile: {
+          name: 'River Nile',
+          card: {
+            capital: 'Ed Damer',
+            cities: 'Ed Damer, Atbara, Shendi, Berber, Abu Hamad',
+            landmarks: 'The pyramids of Begrawiya (ancient Meroë), the temples of Naqa and Musawwarat es-Sufra, and the meeting point of the Atbara River and the Nile',
+            history: 'The ancient city of Meroë, near Begrawiya, was the capital of the Kingdom of Kush for hundreds of years, and it was ruled by powerful queens who held the title “Kandake”. In modern times, Atbara became Sudan’s railway city.',
+            fact: 'Sudan has more pyramids than Egypt! Begrawiya alone has dozens of small pyramids with steep, pointed sides.'
+          },
+          questions: {
+            young: [
+              { q: 'What can we see at Begrawiya?', a: ['Ancient pyramids', 'Skyscrapers', 'Waterfalls'], hint: 'Pointed stone buildings from the days of the ancient kings.' },
+              { q: 'Which city is famous for its railway and trains?', a: ['Atbara', 'Suakin', 'El Geneina'], hint: 'It has the same name as the river that meets the Nile there.' }
+            ],
+            older: [
+              { q: 'What title was given to the queens who ruled the Kingdom of Meroë?', a: ['Kandake', 'Sultana', 'Princess'], hint: 'An ancient Nubian title that Sudanese people are still proud of.' },
+              { q: 'Which river flows into the Nile at the city of Atbara?', a: ['The Atbara River', 'The Blue Nile', 'Bahr al-Arab'], hint: 'It has the same name as the city.' }
+            ]
+          }
+        },
+        northern: {
+          name: 'Northern',
+          card: {
+            capital: 'Dongola',
+            cities: 'Dongola, Merowe, Karima, Wadi Halfa, Ed Debba',
+            landmarks: 'Jebel Barkal and the Temple of Amun, the pyramids of Nuri, the Deffufa of Kerma, Old Dongola, and the Merowe Dam',
+            history: 'The Kingdom of Kush arose at Kerma more than four thousand years ago; later, Napata, near Jebel Barkal, became its capital. From here King Piye set out, and the Kushites went on to rule the whole of Egypt for about a hundred years.',
+            fact: 'Jebel Barkal was a sacred mountain for the ancient Kushites. The Temple of Amun stands at its foot, and it became a World Heritage Site in 2003!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the ancient sacred mountain near the town of Karima called?', a: ['Jebel Barkal', 'Jebel Marra', 'Jebel Moya'], hint: 'Its name starts with the letter B.' },
+              { q: 'What is the capital of Northern State?', a: ['Dongola', 'Atbara', 'El Obeid'], hint: 'Its name starts with the letter D.' }
+            ],
+            older: [
+              { q: 'What is the big dam built on the Nile in Northern State called?', a: ['The Merowe Dam', 'The Sennar Dam', 'The Roseires Dam'], hint: 'It bears the name of an ancient city.' },
+              { q: 'Which ancient kingdom had Kerma, and later Napata, as its capital?', a: ['The Kingdom of Kush', 'The Blue Sultanate', 'The Fur Sultanate'], hint: 'Its name is short — just four letters.' }
+            ]
+          }
+        },
+        nkordofan: {
+          name: 'North Kordofan',
+          card: {
+            capital: 'El Obeid',
+            cities: 'El Obeid, Umm Ruwaba, Bara, Er Rahad, Sodiri',
+            landmarks: 'El Obeid’s gum arabic market, the hashab (gum acacia) forests, and the site of the Battle of Shaykan',
+            history: 'In 1883, the army of Imam al-Mahdi took the city of El Obeid, then won the Battle of Shaykan nearby against a large army led by Hicks Pasha — one of the most famous victories of the Mahdist revolution.',
+            fact: 'Sudan is one of the world’s biggest producers of gum arabic. Much of it comes from the hashab trees of Kordofan, and it is used in sweets and medicines!'
+          },
+          questions: {
+            young: [
+              { q: 'What do we collect from hashab trees?', a: ['Gum arabic', 'Dates', 'Oranges'], hint: 'A sticky substance that oozes from the tree’s trunk.' },
+              { q: 'What is the capital of North Kordofan State?', a: ['El Obeid', 'Kadugli', 'El Fasher'], hint: 'In Arabic, its name means “the little white one” — the colour of milk.' }
+            ],
+            older: [
+              { q: 'Which famous battle took place near El Obeid in 1883?', a: ['Shaykan', 'Karari', 'Badr'], hint: 'Its name starts with the letter S.' },
+              { q: 'Which city is nicknamed “Bride of the Sands”?', a: ['El Obeid', 'Port Sudan', 'Kassala'], hint: 'The capital of North Kordofan.' }
+            ]
+          }
+        },
+        skordofan: {
+          name: 'South Kordofan',
+          card: {
+            capital: 'Kadugli',
+            cities: 'Kadugli, Dilling, Talodi, Abu Jubayhah, Rashad',
+            landmarks: 'The Nuba Mountains, the town of Dilling and its university, and the green forests and plains of Abu Jubayhah',
+            history: 'The Nuba Mountains are the ancient home of many peoples, each with its own language, customs and songs. People have lived among these mountains and farmed their terraced slopes since long ago.',
+            fact: 'The Nuba Mountains are famous for traditional wrestling contests, where people from the villages gather to sing and dance in honour of the champions!'
+          },
+          questions: {
+            young: [
+              { q: 'What are the famous mountains in South Kordofan called?', a: ['The Nuba Mountains', 'The Taka Mountains', 'The Ingessana Hills'], hint: 'They share their name with the Nuba people.' },
+              { q: 'Which traditional sport is famous in the Nuba Mountains?', a: ['Wrestling', 'Ice skating', 'Diving'], hint: 'Two players grapple until one brings the other to the ground.' }
+            ],
+            older: [
+              { q: 'What is the capital of South Kordofan State?', a: ['Kadugli', 'Dilling', 'El Obeid'], hint: 'Its name starts with the letter K.' },
+              { q: 'Which country borders South Kordofan State to the south?', a: ['South Sudan', 'Chad', 'Ethiopia'], hint: 'A neighbouring country whose name is very close to Sudan’s.' }
+            ]
+          }
+        },
+        wkordofan: {
+          name: 'West Kordofan',
+          card: {
+            capital: 'El Fula',
+            cities: 'El Fula, En Nahud, Babanusa, El Muglad, Lagawa',
+            landmarks: 'The livestock market in En Nahud, the railway station at Babanusa, and the oil fields',
+            history: 'West Kordofan is home to herders who move with their animals between north and south, following the rain and the pasture. The railway passes through Babanusa on its way to Nyala in Darfur.',
+            fact: 'The famous “Hamari” sheep are named after the Hamar people of the En Nahud area, and many of them are exported to other countries!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the town of En Nahud famous for?', a: ['Trading sheep and livestock', 'Fishing', 'Making cars'], hint: 'Woolly animals that say “baa”!' },
+              { q: 'What is the capital of West Kordofan State?', a: ['El Fula', 'En Nahud', 'Nyala'], hint: 'Its name sounds like “ful”, the Arabic word for beans.' }
+            ],
+            older: [
+              { q: 'What is the famous breed of sheep named after the Hamar people?', a: ['Hamari', 'Kabashi', 'Baggari'], hint: 'Its name comes from the name of the people themselves.' },
+              { q: 'Which crop grows in the sands of Kordofan and has seeds we eat roasted?', a: ['Groundnuts (peanuts)', 'Rice', 'Apples'], hint: 'We crack the shell with our fingers — in Sudan it’s called “ful Sudani”.' }
+            ]
+          }
+        },
+        edarfur: {
+          name: 'East Darfur',
+          card: {
+            capital: 'Ed Daein',
+            cities: 'Ed Daein, Adila, Abu Karinka, Abu Jabra',
+            landmarks: 'Bahr al-Arab, the big livestock markets, and the railway station in Ed Daein',
+            history: 'East Darfur State was created in 2012. Its people are well known for herding cattle, which they move south towards Bahr al-Arab in the dry season in search of water and grass.',
+            fact: '“Bahr al-Arab” — meaning “Sea of the Arabs” — flows through the south of the state. But it isn’t a sea at all: it’s a river where herds of cattle drink in the summer!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the capital of East Darfur State?', a: ['Ed Daein', 'Nyala', 'Zalingei'], hint: 'After “Ed”, its name starts with the letter D.' },
+              { q: 'Which animals do many people in East Darfur herd?', a: ['Cows', 'Penguins', 'Dolphins'], hint: 'They give us milk and say “moo”!' }
+            ],
+            older: [
+              { q: 'What is the river that flows through the south of East Darfur State called?', a: ['Bahr al-Arab', 'The Atbara River', 'The Dinder River'], hint: 'Its name contains the word “Bahr” (sea), even though it’s a river.' },
+              { q: 'Which country borders East Darfur State to the south?', a: ['South Sudan', 'Egypt', 'Libya'], hint: 'A neighbouring country whose name is very close to Sudan’s.' }
+            ]
+          }
+        },
+        sdarfur: {
+          name: 'South Darfur',
+          card: {
+            capital: 'Nyala',
+            cities: 'Nyala, Kas, Buram, Tulus',
+            landmarks: 'Nyala’s great market, Wadi Nyala, the railway station, and Radom National Park',
+            history: 'The railway reached Nyala in the late 1950s, making it the last train station in western Sudan. The city kept growing until it became one of the largest in the country.',
+            fact: 'In the south of the state lies Radom National Park, on the border with the Central African Republic. It is one of Sudan’s largest nature reserves, with forests, rivers and wild animals!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the capital of South Darfur State?', a: ['Nyala', 'El Fasher', 'El Geneina'], hint: 'Its name starts with the letter N.' },
+              { q: 'Which kind of transport reaches Nyala on iron rails?', a: ['The train', 'The ship', 'The plane'], hint: 'It blows its whistle: choo-choo!' }
+            ],
+            older: [
+              { q: 'What is the big nature reserve in South Darfur called?', a: ['Radom National Park', 'Dinder National Park', 'Sanganeb Marine Park'], hint: 'Its name starts with the letter R.' },
+              { q: 'Where is the last railway station in western Sudan?', a: ['Nyala', 'Port Sudan', 'Wadi Halfa'], hint: 'The capital of the state we’re visiting right now.' }
+            ]
+          }
+        },
+        cdarfur: {
+          name: 'Central Darfur',
+          card: {
+            capital: 'Zalingei',
+            cities: 'Zalingei, Garsila, Nertiti, Um Dukhun',
+            landmarks: 'Jebel Marra and its volcanic crater, the Deriba lakes, and the waterfalls and orchards on the mountain’s slopes',
+            history: 'Jebel Marra was the heart of the old Fur Sultanate, and the Fur people farmed the fertile slopes around it. Today, Zalingei has a university that bears the city’s name.',
+            fact: 'Jebel Marra is a dormant volcano and the highest peak in Sudan, rising more than 3,000 metres. Inside its crater are two blue lakes called “Deriba”!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the tall mountain in Central Darfur called?', a: ['Jebel Marra', 'Jebel Barkal', 'The Taka Mountains'], hint: 'Its name is short and starts with the letter M.' },
+              { q: 'What is the capital of Central Darfur State?', a: ['Zalingei', 'Nyala', 'Ed Daein'], hint: 'Its name starts with the letter Z.' }
+            ],
+            older: [
+              { q: 'What is the highest peak in Sudan?', a: ['Jebel Marra', 'Jebel Barkal', 'Jebel Moya'], hint: 'A dormant volcano in Darfur.' },
+              { q: 'What is inside the crater of Jebel Marra?', a: ['Two lakes', 'A big city', 'A sandy desert'], hint: 'Blue water that has collected in the crater, called “Deriba”.' }
+            ]
+          }
+        },
+        wdarfur: {
+          name: 'West Darfur',
+          card: {
+            capital: 'El Geneina',
+            cities: 'El Geneina, Kereinik, Habila, Beida',
+            landmarks: 'Wadi Kaja and its orchards, and the palace of the Sultans of Dar Masalit in El Geneina',
+            history: 'El Geneina was the capital of the “Sultanate of Dar Masalit”. In 1910, Sultan Tajuddin resisted the French army advancing from Chad and fell in battle. A few years later, Dar Masalit became part of Sudan.',
+            fact: 'The name “El Geneina” means “the little garden” — the town was named after the many orchards and trees around it!'
+          },
+          questions: {
+            young: [
+              { q: 'What does the name of the town “El Geneina” mean?', a: ['The little garden', 'The big sea', 'The high mountain'], hint: 'A place full of trees and flowers.' },
+              { q: 'What is the capital of West Darfur State?', a: ['El Geneina', 'El Fasher', 'Kadugli'], hint: 'Its name means “the garden”.' }
+            ],
+            older: [
+              { q: 'Which sultanate had El Geneina as its capital?', a: ['The Sultanate of Dar Masalit', 'The Blue Sultanate', 'The Kingdom of Kush'], hint: 'It’s named after the Masalit people.' },
+              { q: 'Which country borders West Darfur State to the west?', a: ['Chad', 'Ethiopia', 'Egypt'], hint: 'It has a big lake that shares its name.' }
+            ]
+          }
+        },
+        ndarfur: {
+          name: 'North Darfur',
+          card: {
+            capital: 'El Fasher',
+            cities: 'El Fasher, Kutum, Mellit, Kabkabiya, Tina',
+            landmarks: 'The palace of Sultan Ali Dinar (El Fasher Museum), Jebel Meidob, and Wadi Howar in the desert',
+            history: 'El Fasher was the capital of the “Fur Sultanate”. Sultan Ali Dinar ruled it from 1898 until 1916, when the British army entered Darfur and made it part of Sudan.',
+            fact: 'Every year, Sultan Ali Dinar sent a kiswa — the cloth covering of the Holy Kaaba — to Mecca. He is also credited with digging wells for pilgrims near Medina that are still called “Abyar Ali” (Ali’s Wells)!'
+          },
+          questions: {
+            young: [
+              { q: 'What is the capital of North Darfur State?', a: ['El Fasher', 'Nyala', 'El Obeid'], hint: 'After “El”, its name starts with the letter F.' },
+              { q: 'What did Sultan Ali Dinar send to Mecca every year?', a: ['The covering of the Kaaba (kiswa)', 'A train', 'A fishing boat'], hint: 'A beautiful black cloth that covers the Kaaba.' }
+            ],
+            older: [
+              { q: 'Which sultanate had El Fasher as its capital?', a: ['The Fur Sultanate', 'The Blue Sultanate', 'The Sultanate of Dar Masalit'], hint: 'It’s named after the people who gave “Darfur” its name.' },
+              { q: 'Which famous sultan ruled Darfur from the city of El Fasher?', a: ['Ali Dinar', 'Amara Dunqas', 'Piye'], hint: 'He’s the one who sent the covering of the Kaaba to Mecca.' }
+            ]
+          }
+        }
+      }
+    },
+
+    shared: {
+      geo: {
+        label: 'Sudan’s Geography',
+        young: [
+          { q: 'On which continent is Sudan?', a: ['Africa', 'Asia', 'Europe'], hint: 'The continent where the River Nile flows.' },
+          { q: 'What is the longest river flowing through Sudan?', a: ['The River Nile', 'The Atbara River', 'The Gash River'], hint: 'It forms where the Blue Nile and the White Nile meet in Khartoum.' },
+          { q: 'Which sea is on Sudan’s coast?', a: ['The Red Sea', 'The Black Sea', 'The Mediterranean Sea'], hint: 'The city of Port Sudan lies on it.' },
+          { q: 'Which country borders Sudan to the north?', a: ['Egypt', 'Chad', 'Ethiopia'], hint: 'It has the Pyramids of Giza, and the Nile flows through it before reaching the sea.' },
+          { q: 'In which direction does the River Nile flow inside Sudan?', a: ['Northwards', 'Southwards', 'Westwards'], hint: 'It keeps flowing until it reaches Egypt and then the sea.' },
+          { q: 'What is the island at the meeting of the two Niles in Khartoum called?', a: ['Tuti Island', 'Aba Island', 'Suakin Island'], hint: 'Its name starts with the letter T.' },
+          { q: 'Which vast desert covers northern Sudan?', a: ['The Sahara', 'The Empty Quarter', 'The Gobi Desert'], hint: 'The largest hot desert in the world.' },
+          { q: 'How many states does Sudan have?', a: ['18', '10', '25'], hint: 'Count the coloured states on the map!' }
+        ],
+        older: [
+          { q: 'Which neighbouring country separated from Sudan in 2011?', a: ['South Sudan', 'Egypt', 'Libya'], hint: 'Its name contains the word “Sudan”.' },
+          { q: 'Which three cities are known together as the “Three Towns”?', a: ['Khartoum, Omdurman and Khartoum North', 'Kassala, Gedaref and Port Sudan', 'Nyala, El Fasher and El Geneina'], hint: 'Three cities facing one another where the two Niles meet.' },
+          { q: 'Which city lies west of the Nile, opposite Khartoum, and is nicknamed the “National Capital”?', a: ['Omdurman', 'Khartoum North', 'Wad Madani'], hint: 'The Tomb of Imam al-Mahdi is there.' },
+          { q: 'On which side of Sudan is the Red Sea?', a: ['The east', 'The west', 'The south'], hint: 'The direction where the sun rises.' },
+          { q: 'In which part of Sudan is Darfur?', a: ['The west', 'The east', 'The north'], hint: 'The direction where the sun sets.' },
+          { q: 'How many countries border Sudan?', a: ['7', '4', '10'], hint: 'Egypt, Libya, Chad, the Central African Republic, South Sudan, Ethiopia and Eritrea.' },
+          { q: 'What is the Sixth Cataract of the Nile — the one closest to Khartoum — called?', a: ['The Sabaloka Cataract', 'The Kajbar Cataract', 'The Dal Cataract'], hint: 'It lies in a rocky gorge north of Khartoum, and its name starts with the letter S.' },
+          { q: 'What is the Sudanese part of the lake created by the High Dam called?', a: ['Lake Nubia', 'Lake Tana', 'Lake Victoria'], hint: 'It bears the name of the people who lived along the Nile in the north.' }
+        ]
+      },
+      history: {
+        label: 'Sudan’s History',
+        young: [
+          { q: 'On which day do Sudanese people celebrate Independence Day?', a: ['1 January', '1 May', '1 September'], hint: 'The very first day of the new year.' },
+          { q: 'Which of these countries has the most pyramids?', a: ['Sudan', 'Egypt', 'Greece'], hint: 'Our country! It has more than two hundred small pyramids built by the kings of Kush.' },
+          { q: 'What was the ancient city of Meroë famous for?', a: ['Ironworking', 'Making cars', 'Building planes'], hint: 'A strong metal they used to make tools.' },
+          { q: 'Who was the leader of the Mahdist revolution?', a: ['Imam Muhammad Ahmad al-Mahdi', 'Sultan Ali Dinar', 'Amara Dunqas'], hint: 'His title was “al-Mahdi”, and his tomb is in Omdurman.' },
+          { q: 'What were the brave queens who ruled the Kingdom of Kush called?', a: ['The Kandakes', 'The Princesses', 'The Sultanas'], hint: 'A title Sudanese people are still proud of today.' }
+        ],
+        older: [
+          { q: 'Which ancient kingdom’s kings built the pyramids of Begrawiya?', a: ['The Kingdom of Kush', 'The Blue Sultanate', 'The Fur Sultanate'], hint: 'Its name is short — just four letters.' },
+          { q: 'What was the writing system invented by the people of ancient Meroë called?', a: ['Meroitic script', 'Kufic script', 'Latin script'], hint: 'It’s named after their city.' },
+          { q: 'In which city is Imam al-Mahdi buried?', a: ['Omdurman', 'El Obeid', 'Suakin'], hint: 'The city nicknamed the “National Capital”.' },
+          { q: 'Which great battle took place near Omdurman in 1898?', a: ['Karari', 'Shaykan', 'Badr'], hint: 'It’s named after a hill north of Omdurman, and starts with the letter K.' },
+          { q: 'Who was Sudan’s first prime minister?', a: ['Ismail al-Azhari', 'Muhammad Ahmad Mahjoub', 'Abdallah Khalil'], hint: 'He raised the flag of independence on 1 January 1956; his first name is Ismail.' },
+          { q: 'Which Kushite king conquered Egypt about 2,700 years ago?', a: ['Piye', 'Ramesses II', 'Alexander the Great'], hint: 'A king from Napata, near Jebel Barkal; his name starts with the letter P.' },
+          { q: 'Which Christian Nubian kingdom had its capital at Soba, near Khartoum?', a: ['The Kingdom of Alwa', 'The Kingdom of Makuria', 'The Kingdom of Nobatia'], hint: 'Its name starts with the letter A.' },
+          { q: 'Who did Amara Dunqas join forces with to found the Blue Sultanate?', a: ['Abdallah Jamma', 'Ali Dinar', 'Al-Zubayr Pasha'], hint: 'The leader of the Abdallab; his first name is Abdallah.' }
+        ]
+      },
+      culture: {
+        label: 'Culture & Heritage',
+        young: [
+          { q: 'Which bird appears on Sudan’s emblem?', a: ['The secretary bird', 'The dove', 'The parrot'], hint: 'It’s our guide on this journey!' },
+          { q: 'What are the colours of Sudan’s flag?', a: ['Red, white, black and green', 'Only blue and yellow', 'Orange and purple'], hint: 'Three stripes and a green triangle.' },
+          { q: 'Which Sudanese food is made from sorghum flour on a hot iron griddle?', a: ['Kisra', 'Pizza', 'Sushi'], hint: 'Thin sheets that we eat with stew.' },
+          { q: 'What is the long cloth that Sudanese women wrap around the body and head called?', a: ['The toub', 'The kimono', 'The sari'], hint: 'Its name sounds like the Arabic word “thawb”, meaning garment.' },
+          { q: 'What is the long white robe worn by men in Sudan called?', a: ['The jalabiya', 'The kimono', 'The winter coat'], hint: 'We wear it at Eid, together with a turban.' },
+          { q: 'Which flower do we use to make a red drink in Sudan?', a: ['Karkadeh (hibiscus)', 'Sunflower', 'Jasmine'], hint: 'A deep-red flower; its drink tastes a little sour.' },
+          { q: 'Which Sudanese Ramadan drink is made from sorghum?', a: ['Helu-mur', 'Green tea', 'Apple juice'], hint: 'Its Arabic name means “sweet-bitter” — two opposite tastes!' },
+          { q: 'What is Sudan’s currency called?', a: ['The Sudanese pound', 'The dollar', 'The yen'], hint: 'It has the same name as the British currency.' }
+        ],
+        older: [
+          { q: 'How does Sudan’s national anthem begin?', a: ['“We are the soldiers of God, the soldiers of the nation”', '“My country, my country, my country”', '“My homeland, my homeland”'], hint: 'It begins with the word “We”.' },
+          { q: 'What is the nickname of Sudan’s national football team?', a: ['Sokoor Al-Jediane (the Falcons of Jediane)', 'The Atlas Lions', 'The Pharaohs'], hint: 'It’s named after the bird on the state emblem.' },
+          { q: 'What colour is the triangle on Sudan’s flag?', a: ['Green', 'Blue', 'Yellow'], hint: 'The colour of crops and fields.' },
+          { q: 'Which Sudanese dish is a cooked dough shaped like a dome, with stew poured over it?', a: ['Aseeda', 'Kisra', 'Sheiriya (sweet vermicelli)'], hint: 'Its name starts with the letter A.' },
+          { q: 'What does a Sudanese bride put on her hands and feet to decorate them?', a: ['Henna', 'Mud', 'Ink'], hint: 'A plant that is ground into powder and stains the skin reddish-brown.' },
+          { q: 'What is the clay pot used to make Sudanese coffee called?', a: ['The jebena', 'A glass jug', 'A samovar'], hint: 'Its name sounds like “jibna”, the Arabic word for cheese.' },
+          { q: 'Who wrote the words of Sudan’s national anthem?', a: ['Ahmed Mohammed Salih', 'Tayeb Salih', 'Muhammad al-Fayturi'], hint: 'A poet and educator whose first name is Ahmed.' }
+        ]
+      },
+      nature: {
+        label: 'Sudan’s Nature',
+        young: [
+          { q: 'What do Sudanese people call the rainy season?', a: ['Al-kharif', 'Winter', 'Spring'], hint: 'In Arabic it’s the word for “autumn”. It starts around July, and the land turns green.' },
+          { q: 'What is the great dust storm that blows over Khartoum called?', a: ['The haboob', 'Snow', 'A hurricane'], hint: 'Its name comes from the Arabic word for the wind “blowing”.' },
+          { q: 'Which huge tree in Kordofan stores water in its trunk?', a: ['The baobab (tebeldi)', 'The palm tree', 'The pine tree'], hint: 'Its trunk is very wide; in Sudan it’s called “tebeldi”.' },
+          { q: 'Which tree grows along the Nile in the north and gives us fruit to eat?', a: ['The palm tree', 'The apple tree', 'The cherry tree'], hint: 'Its fruit is sweet dates.' },
+          { q: 'Which animal do herders ride across Sudan’s deserts — the one called the “ship of the desert”?', a: ['The camel', 'The horse', 'The elephant'], hint: 'It has a hump and can go for days without water.' }
+        ],
+        older: [
+          { q: 'Which large animal lives in the Nile and has powerful jaws and rough, scaly skin?', a: ['The crocodile', 'The polar bear', 'The kangaroo'], hint: 'It lies on the riverbank, basking in the sun.' },
+          { q: 'What creates the beautiful colours under the Red Sea near Port Sudan?', a: ['Coral reefs', 'Ice', 'Quicksand'], hint: 'The old houses of Suakin were built from it.' },
+          { q: 'Which country is the world’s top producer of gum arabic?', a: ['Sudan', 'Nigeria', 'Chad'], hint: 'Our country! Most of it comes from the hashab trees of Kordofan.' },
+          { q: 'Which gentle sea animal lives in the Red Sea off Sudan’s coast and grazes on seagrass?', a: ['The dugong (sea cow)', 'The polar bear', 'The penguin'], hint: 'Its other name contains the word “cow”.' },
+          { q: 'Which marine park near Port Sudan is a UNESCO World Heritage Site?', a: ['Sanganeb', 'Dinder', 'Radom'], hint: 'A coral reef in the middle of the Red Sea; its name starts with the letter S.' },
+          { q: 'Which bay near Port Sudan is home to dugongs and nesting seabirds?', a: ['Dungonab Bay', 'The Gulf of Aqaba', 'The Gulf of Aden'], hint: 'Its name starts with the letter D.' }
+        ]
+      }
+    }
+  }
+};
+
+/* =====================================================================
+   2-ج) الترجمة الفرنسية  —  TRANSLATIONS.fr
+   طبقة فوق COUNTRY_PACK و SHARED_QUESTIONS: نفس البنية ونفس الترتيب، وفيها النصوص فقط.
+   كل حقل غير مذكور هنا يُؤخذ من النسخة العربية (الصور، الألوان، الإحداثيات، review...).
+   الأسئلة بنفس ترتيب الأصل، والإجابة الصحيحة أول عنصر في a كما في العربية.
+   التلميحات مكيّفة للفرنسية (مثلاً «يبدأ بحرف الدال» ← « commence par la lettre D »).
+   ===================================================================== */
+// قواعد الطباعة الفرنسية: مسافة غير منكسرة قبل ! ? : ; وداخل « »
+function frTypo(v) {
+  if (typeof v === 'string') return v.replace(/ ([!?:;»])/g, '\u202F$1').replace(/« /g, '«\u202F');
+  if (Array.isArray(v)) return v.map(frTypo);
+  if (v && typeof v === 'object') { const o = {}; Object.keys(v).forEach(k => { o[k] = frTypo(v[k]); }); return o; }
+  return v;
+}
+// يُضاف إلى TRANSLATIONS (المعرّف أعلاه مع الإنجليزية)
+TRANSLATIONS.fr = frTypo({
+    pack: {
+      gameName: 'Beladi',
+      countryName: 'Soudan',
+      historyLabel: 'Histoire du Soudan',
+      numerals: 'latn',
+      guide: { name: 'Saqr al-Jadiane' },
+      medal: { name: 'Médaille Saqr al-Jadiane' },
+      trips: [
+        { name: 'Voyage au Centre',  badge: { name: 'Insigne du Centre' } },
+        { name: 'Voyage à l’Est',    badge: { name: 'Insigne de l’Est' } },
+        { name: 'Voyage au Nord',    badge: { name: 'Insigne du Nord' } },
+        { name: 'Voyage au Kordofan', badge: { name: 'Insigne du Kordofan' } },
+        { name: 'Voyage au Darfour', badge: { name: 'Insigne du Darfour' } }
+      ],
+      roads: {
+        'khartoum>jazeera':    { name: 'Route Khartoum – Wad Madani' },
+        'jazeera>sennar':      { name: 'Route Wad Madani – Sennar' },
+        'sennar>whitenile':    { name: 'Route Sennar – Kosti' },
+        'whitenile>bluenile':  { name: 'Route Kosti – Sennar – Ad-Damazin' },
+        'gedaref>kassala':     { name: 'Route Gedaref – Kassala' },
+        'kassala>redsea':      { name: 'Route Kassala – Port-Soudan' },
+        'rivernile>northern':  { name: 'Route Atbara – Merowe, puis la route du Nord' },
+        'nkordofan>skordofan': { name: 'Route El Obeid – Dilling – Kadugli' },
+        'skordofan>wkordofan': { name: 'Route Kadugli – El Fula' },
+        'edarfur>sdarfur':     { name: 'Route Ed-Daein – Nyala' },
+        'sdarfur>cdarfur':     { name: 'Route Nyala – Zalingei' },
+        'cdarfur>wdarfur':     { name: 'Route Zalingei – El Geneina' },
+        'wdarfur>ndarfur':     { name: 'Route El Geneina – El Fasher' }
+      },
+
+      regions: {
+        /* ---------------- Voyage au Centre ---------------- */
+        khartoum: {
+          name: 'Khartoum',
+          card: {
+            capital: 'Khartoum (c’est aussi la capitale de tout le Soudan)',
+            cities: 'Khartoum, Omdourman, Khartoum-Nord (Bahri)',
+            landmarks: 'Al-Mogran (la confluence des deux Nils), le mausolée de l’imam al-Mahdi, la maison du Khalifa, le Musée national, l’île de Tuti',
+            history: 'En 1821, Khartoum n’était qu’un petit camp militaire à la confluence des deux Nils ; elle est ensuite devenue la capitale du pays. En 1885, l’armée de l’imam al-Mahdi y est entrée, et la capitale a été transférée à Omdourman, sur l’autre rive du Nil. Le 1er janvier 1956, le drapeau du Soudan indépendant a été hissé à Khartoum.',
+            gallery: [
+              { title: 'Le mausolée de l’imam al-Mahdi à Omdourman',
+                note: 'L’imam Mohammed Ahmed al-Mahdi a été enterré ici en 1885. La première coupole a été détruite pendant la guerre de 1898, puis reconstruite une cinquantaine d’années plus tard.' },
+              { title: 'Le Musée national du Soudan à Khartoum',
+                note: 'Inauguré en 1971, il conserve les trésors des royaumes de Koush, de Méroé et de Nubie. Dans son jardin se dressent des temples antiques, transportés pierre par pierre depuis le Nord avant d’être engloutis par le lac du Haut Barrage.' },
+              { title: 'La maison historique du Khalifa à Omdourman',
+                note: 'Le khalife Abdallahi at-Taaïchi, qui a gouverné le pays après l’imam al-Mahdi, y a vécu. La maison est devenue un musée en 1928 ; on aperçoit derrière elle la coupole du Mahdi.' },
+              { title: 'Coucher de soleil sur le Nil Blanc à Khartoum',
+                note: 'Le Nil Blanc parcourt des milliers de kilomètres depuis les grands lacs d’Afrique centrale jusqu’à Khartoum, où il rejoint le Nil Bleu à Al-Mogran.' },
+              { title: 'La forêt de Sunut, à la confluence des deux Nils',
+                note: 'Réserve naturelle depuis 1939, cette forêt d’acacias (sunut) pousse sur la rive du Nil Blanc. En hiver, de nombreux oiseaux migrateurs viennent s’y reposer.' }
+            ],
+            fact: 'À Khartoum, le Nil Bleu rencontre le Nil Blanc dans un lieu appelé « Al-Mogran ». C’est de là que le Nil commence son long voyage vers le nord !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle est la capitale du Soudan ?', a: ['Khartoum', 'Wad Madani', 'Rabak'], hint: 'C’est la ville où nous nous trouvons en ce moment sur la carte !' },
+              { q: 'Quels sont les deux fleuves qui se rejoignent à Khartoum ?', a: ['Le Nil Bleu et le Nil Blanc', 'Le Tigre et l’Euphrate', 'Le Nil Rouge et le Nil Vert'], hint: 'Leurs noms sont des couleurs : l’une comme le ciel, l’autre comme le lait.' }
+            ],
+            older: [
+              { q: 'En quelle année le Soudan a-t-il obtenu son indépendance ?', a: ['1956', '1925', '1989'], hint: 'On fête l’indépendance le 1er janvier ; c’était au milieu des années 1950.' },
+              { q: 'Comment appelle-t-on le lieu où les deux Nils se rejoignent à Khartoum ?', a: ['Al-Mogran', 'Le barrage', 'La cataracte'], hint: 'Son nom vient du mot arabe « iqtirân », qui veut dire « réunion de deux choses ».' }
+            ]
+          }
+        },
+        jazeera: {
+          name: 'Al-Jazira',
+          card: {
+            capital: 'Wad Madani',
+            cities: 'Wad Madani, Al-Hasahisa, Al-Managil, Rufaa',
+            landmarks: 'Le projet d’Al-Jazira et ses grands canaux, et les rives du Nil Bleu à Wad Madani',
+            history: 'Le projet d’Al-Jazira a été inauguré en 1925, en même temps que le barrage de Sennar. Son eau s’écoule dans les canaux toute seule, grâce à la pente du terrain, sans aucune pompe. À Rufaa, le cheikh Babiker Badri a fondé en 1907 la première école de filles du Soudan.',
+            gallery: [
+              { title: 'Le projet d’Al-Jazira vu de l’espace',
+                note: 'Image satellite prise en 2006. Les lignes vertes bien alignées sont les champs et les canaux du projet, qui s’étendent entre le Nil Bleu et le Nil Blanc.' },
+              { title: 'Le coton au marché de Wad Madani',
+                note: 'Le coton d’Al-Jazira est l’une des cultures les plus célèbres du Soudan. On en fait du tissu, des matelas et des oreillers, comme ceux de la photo.' },
+              { title: 'La ville de Wad Madani et le Nil Bleu vus du ciel',
+                note: 'Wad Madani est la capitale de l’État d’Al-Jazira ; elle se trouve sur la rive ouest du Nil Bleu.' },
+              { title: 'Les digues du canal principal du projet d’Al-Jazira',
+                note: 'Ces talus de terre sont les digues du canal, et l’eau coule entre elles. Le canal principal part du barrage de Sennar et file vers le nord pour irriguer les champs.' }
+            ],
+            fact: 'Le projet d’Al-Jazira est l’un des plus grands projets agricoles irrigués du monde. On y cultive le coton depuis près de cent ans !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle célèbre culture blanche pousse dans le projet d’Al-Jazira ?', a: ['Le coton', 'La banane', 'Le riz'], hint: 'On en fait des vêtements ; il est doux et blanc comme un nuage.' },
+              { q: 'Quelle est la capitale de l’État d’Al-Jazira ?', a: ['Wad Madani', 'Singa', 'Ad-Damazin'], hint: 'Son nom commence par le mot « Wad ».' }
+            ],
+            older: [
+              { q: 'Sur la rive de quel fleuve se trouve la ville de Wad Madani ?', a: ['Le Nil Bleu', 'Le Nil Blanc', 'L’Atbara'], hint: 'Le fleuve qui porte la couleur du ciel.' },
+              { q: 'D’où vient l’eau qui irrigue le projet d’Al-Jazira ?', a: ['Du barrage de Sennar', 'De la mer Rouge', 'Uniquement des puits'], hint: 'D’un barrage sur le Nil Bleu, dans l’État voisin, au sud.' }
+            ]
+          }
+        },
+        sennar: {
+          name: 'Sennar',
+          card: {
+            capital: 'Singa',
+            cities: 'Singa, Sennar, Ad-Dinder, As-Suki',
+            landmarks: 'Le barrage de Sennar, les vestiges de Sennar, capitale du Sultanat bleu, le site archéologique de Djebel Moya et le parc national de Dinder',
+            history: 'En 1504, Amara Dunqas, chef des Foundj, s’est allié à Abdallah Jammaa, chef des Abdallab : ensemble, ils ont fondé le « Sultanat bleu » et fait de Sennar sa capitale. Ce sultanat a régné plus de 300 ans, jusqu’à sa chute en 1821.',
+            gallery: [
+              { title: 'Le barrage de Sennar sur le Nil Bleu',
+                note: 'Achevé en 1925, c’est l’un des plus anciens barrages du Soudan. Il élève le niveau du Nil Bleu pour que l’eau s’écoule dans les canaux du projet d’Al-Jazira.' },
+              { title: 'La grande mosquée de Sennar, bâtie à l’époque du Sultanat bleu (dessin de 1829)',
+                note: 'Un voyageur anglais l’a dessinée lors de sa visite à Sennar, huit ans après la chute du sultanat. Grâce à lui, on connaît la forme de la mosquée et de son haut minaret.' },
+              { title: 'Les fouilles du site archéologique de Djebel Moya (photo de plus de 100 ans)',
+                note: 'Entre 1911 et 1914, des milliers d’ouvriers ont fouillé ce site et découvert les traces de gens qui vivaient il y a des milliers d’années. Les archéologues utilisaient même des cerfs-volants pour photographier le site depuis le ciel !' },
+              { title: 'La rivière Dinder vue d’avion',
+                note: 'Elle prend sa source dans les montagnes d’Éthiopie, traverse le parc national de Dinder, créé en 1935 pour protéger les animaux sauvages, puis se jette dans le Nil Bleu.' }
+            ],
+            fact: 'La ville de Sennar a été la capitale du « Sultanat bleu » pendant plus de 300 ans ! Et à Singa, on a découvert en 1924 le crâne d’un humain qui vivait il y a plus de cent mille ans.'
+          },
+          questions: {
+            young: [
+              { q: 'Sennar était la capitale d’un ancien royaume. Comment s’appelait-il ?', a: ['Le Sultanat bleu', 'Le Sultanat vert', 'Le Royaume de la mer'], hint: 'Son nom porte la couleur du ciel.' },
+              { q: 'Sur quel fleuve a-t-on construit le barrage de Sennar ?', a: ['Le Nil Bleu', 'Le Nil Blanc', 'L’Atbara'], hint: 'C’est le fleuve qui arrive de l’est, et son nom est une couleur.' }
+            ],
+            older: [
+              { q: 'Comment s’appelle le célèbre parc d’animaux sauvages de l’État de Sennar ?', a: ['Le parc national de Dinder', 'La réserve de Radom', 'La réserve de Sanganeb'], hint: 'Son nom commence par la lettre D.' },
+              { q: 'Quelle est aujourd’hui la capitale de l’État de Sennar ?', a: ['Singa', 'Sennar', 'Rabak'], hint: 'Attention ! Ce n’est pas la ville de Sennar elle-même, mais une autre ville dont le nom commence aussi par la lettre S.' }
+            ]
+          }
+        },
+        whitenile: {
+          name: 'Nil-Blanc',
+          card: {
+            capital: 'Rabak',
+            cities: 'Rabak, Kosti, Ad-Douem, Al-Jabalayn',
+            landmarks: 'L’île d’Aba, le pont de Kosti sur le Nil Blanc, la sucrerie de Kenana et l’institut de Bakht er-Ruda',
+            history: 'C’est sur l’île d’Aba que Mohammed Ahmed al-Mahdi a lancé son appel en 1881 ; de là est partie la révolution mahdiste. À Ad-Douem, l’institut de Bakht er-Ruda a été fondé en 1934 : il a formé des générations d’enseignants et rédigé les programmes des écoles du Soudan.',
+            gallery: [
+              { title: 'Des bateaux sur la rive du Nil Blanc à Kosti',
+                note: 'Kosti est un port fluvial important : les bateaux à vapeur en partent vers le sud sur le Nil Blanc, et la route du fleuve y croise la voie ferrée.' },
+              { title: 'Kosti vue d’avion en 1936 (photo historique)',
+                note: 'Une photo rare, prise depuis un avion de ligne il y a environ 90 ans. On raconte que la ville doit son nom à un commerçant grec appelé « Kosti », qui y habitait.' },
+              { title: 'La cheminée de la sucrerie de Kenana',
+                note: 'L’usine a commencé à produire en 1981. Elle transforme la canne cultivée tout autour en sucre, envoyé dans les villes du Soudan et dans d’autres pays.' },
+              { title: 'Une récolteuse de canne à sucre à Kenana',
+                note: 'Cette énorme machine coupe les longues tiges de canne dans les champs ; la canne est ensuite transportée à l’usine pour en extraire le sucre.' },
+              { title: 'Un bateau à vapeur sur le Nil Blanc, près de Rabak',
+                note: 'Rabak est la capitale de l’État du Nil-Blanc ; elle se trouve sur la rive est du Nil, face à la ville de Kosti.' }
+            ],
+            fact: 'Dans l’État du Nil-Blanc se trouve la sucrerie de « Kenana », qui a commencé à produire en 1981. C’est l’une des plus grandes sucreries d’Afrique !'
+          },
+          questions: {
+            young: [
+              { q: 'Que fabrique-t-on à l’usine de « Kenana » ?', a: ['Du sucre', 'Des voitures', 'Du papier'], hint: 'Quelque chose de sucré qu’on met dans le thé.' },
+              { q: 'Quelle est la capitale de l’État du Nil-Blanc ?', a: ['Rabak', 'Khartoum', 'Wad Madani'], hint: 'Son nom est court : seulement cinq lettres.' }
+            ],
+            older: [
+              { q: 'De quel endroit du Nil Blanc est partie la révolution mahdiste ?', a: ['L’île d’Aba', 'L’île de Tuti', 'L’île de Souakin'], hint: 'C’est une île du Nil Blanc, dont le nom ne compte que trois lettres.' },
+              { q: 'Sur quel fleuve se trouve la ville de Kosti ?', a: ['Le Nil Blanc', 'Le Nil Bleu', 'L’Atbara'], hint: 'Le nom de l’État te donne la réponse !' }
+            ]
+          }
+        },
+        bluenile: {
+          name: 'Nil-Bleu',
+          card: {
+            capital: 'Ad-Damazin',
+            cities: 'Ad-Damazin, Er-Roseires, Al-Kurmuk',
+            landmarks: 'Le barrage de Roseires, les monts Ingessana et les baobabs géants (tebeldi)',
+            history: 'Depuis l’Antiquité, la région de Fazoghli, dans cet État, est célèbre pour son or ; c’est pour cela que l’armée de Méhémet Ali Pacha y est arrivée en 1821. Après l’indépendance, le barrage de Roseires a été construit en 1966, puis surélevé en 2013 pour retenir davantage d’eau.',
+            gallery: [
+              { title: 'Le barrage de Roseires sur le Nil Bleu',
+                note: 'Inauguré en 1966, c’est l’une des principales sources d’électricité du Soudan, et il retient l’eau qui irrigue les projets agricoles.' },
+              { title: 'Un baobab (tebeldi) géant au sud de Roseires',
+                note: 'Le tebeldi stocke l’eau dans son tronc énorme et peut vivre des centaines d’années. Autrefois, les gens conservaient l’eau de pluie à l’intérieur de ses troncs creux.' },
+              { title: 'Vue de la ville d’Ad-Damazin',
+                note: 'Ad-Damazin est la capitale de l’État du Nil-Bleu ; elle se trouve près du barrage de Roseires, dans une région riche en pluies et en arbres.' },
+              { title: 'Le lac du barrage de Roseires vu de l’espace',
+                note: 'Image satellite prise en 2012. La longue bande brune, c’est l’eau du Nil Bleu retenue derrière le barrage.' }
+            ],
+            fact: 'Le Nil Bleu entre au Soudan par cet État, en descendant des montagnes d’Éthiopie. C’est là qu’on a construit le barrage de Roseires pour produire de l’électricité !'
+          },
+          questions: {
+            young: [
+              { q: 'De quel pays voisin le Nil Bleu arrive-t-il au Soudan ?', a: ['L’Éthiopie', 'La Libye', 'L’Arabie saoudite'], hint: 'Un pays montagneux situé à l’est du Soudan.' },
+              { q: 'Comment s’appelle le grand barrage près d’Ad-Damazin ?', a: ['Le barrage de Roseires', 'Le barrage de Khartoum', 'Le barrage de la mer'], hint: 'Son nom commence par la lettre R.' }
+            ],
+            older: [
+              { q: 'De quel lac le Nil Bleu prend-il sa source ?', a: ['Le lac Tana', 'Le lac Victoria', 'Le lac Tchad'], hint: 'Un lac des hauts plateaux d’Éthiopie, au nom très court : quatre lettres.' },
+              { q: 'En plus de retenir l’eau, que produit le barrage de Roseires ?', a: ['De l’électricité', 'Du sucre', 'Du coton'], hint: 'Elle sert à allumer les lampes dans les maisons.' }
+            ]
+          }
+        },
+
+        /* ---------------- Voyage à l’Est ---------------- */
+        gedaref: {
+          name: 'Gedaref',
+          card: {
+            capital: 'Gedaref',
+            cities: 'Gedaref, Al-Faw, Gallabat, Al-Hawata',
+            landmarks: 'Le grand marché aux récoltes de Gedaref, les immenses champs de sorgho et de sésame, et le projet agricole de Rahad',
+            history: 'C’est à Gedaref qu’a commencé l’agriculture mécanisée au Soudan, au milieu des années 1940 : depuis, les tracteurs labourent ses vastes plaines argileuses, arrosées par les pluies du kharif.',
+            fact: 'On surnomme Gedaref « le grenier du Soudan », car elle produit d’énormes quantités de sorgho, avec lequel on prépare la kisra et l’assida !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle culture fait la réputation de Gedaref et sert à préparer la kisra ?', a: ['Le sorgho', 'Le coton', 'La canne à sucre'], hint: 'De petits grains qu’on moud en farine.' },
+              { q: 'Quelle est la capitale de l’État de Gedaref ?', a: ['Gedaref', 'Kassala', 'Singa'], hint: 'Elle porte le même nom que l’État !' }
+            ],
+            older: [
+              { q: 'Quel est le surnom de l’État de Gedaref ?', a: ['Le grenier du Soudan', 'La fiancée de la mer', 'La fiancée des sables'], hint: 'Un surnom lié à la nourriture et aux récoltes.' },
+              { q: 'Quel pays est voisin de l’État de Gedaref, à l’est ?', a: ['L’Éthiopie', 'Le Tchad', 'L’Égypte'], hint: 'Le pays d’où vient le Nil Bleu.' }
+            ]
+          }
+        },
+        kassala: {
+          name: 'Kassala',
+          card: {
+            capital: 'Kassala',
+            cities: 'Kassala, Nouvelle-Halfa, Khashm el-Girba, Aroma',
+            landmarks: 'Les monts Taka, la source de Toteil, la rivière Gash, le barrage de Khashm el-Girba et la mosquée de Sayyid al-Hassan à Khatmiyya',
+            history: 'Dans les années 1960, le lac du Haut Barrage a englouti la ville de Ouadi Halfa, dans le Nord. Ses habitants ont alors été installés dans l’État de Kassala, où l’on a bâti pour eux une nouvelle ville, « Nouvelle-Halfa », ainsi que le barrage de Khashm el-Girba sur l’Atbara pour irriguer leurs fermes.',
+            fact: 'Les monts Taka, à Kassala, ressemblent à des doigts de pierre géants ! Et les habitants de Kassala disent : celui qui boit à la source de « Toteil » y reviendra forcément un jour.'
+          },
+          questions: {
+            young: [
+              { q: 'Comment s’appellent les célèbres montagnes de Kassala ?', a: ['Les monts Taka', 'Les monts Nouba', 'Le Djebel Marra'], hint: 'Leur nom commence par la lettre T.' },
+              { q: 'Qu’est-ce qui fait la renommée des vergers de Kassala ?', a: ['Les fruits', 'La neige', 'Le poisson'], hint: 'Quelque chose de sucré qu’on mange, comme la banane et la goyave.' }
+            ],
+            older: [
+              { q: 'Pourquoi a-t-on construit la ville de Nouvelle-Halfa ?', a: ['Pour les habitants de Ouadi Halfa, après que leur ville a été engloutie par le lac du Haut Barrage', 'Pour en faire un port sur la mer', 'Pour en faire la capitale du Soudan'], hint: 'Son nom te rappelle une ancienne ville de l’extrême nord.' },
+              { q: 'Comment s’appelle la rivière saisonnière qui traverse la ville de Kassala ?', a: ['Le Gash', 'Le Dinder', 'Le Rahad'], hint: 'Son nom est court, quatre lettres, et elle déborde pendant le kharif.' }
+            ]
+          }
+        },
+        redsea: {
+          name: 'Mer-Rouge',
+          card: {
+            capital: 'Port-Soudan',
+            cities: 'Port-Soudan, Souakin, Tokar, Haiya',
+            landmarks: 'Le port de Port-Soudan, l’île historique de Souakin, la réserve marine de Sanganeb, les montagnes de la mer Rouge et la station d’été d’Erkowit',
+            history: 'Pendant des centaines d’années, Souakin a été le grand port du Soudan : pèlerins et commerçants y passaient, et ses maisons étaient bâties en pierre de corail. Puis, en 1905, on a commencé à construire Port-Soudan, qui est devenu le premier port du pays.',
+            fact: 'Dans la mer Rouge, près de Port-Soudan, il y a des récifs de corail colorés, des poissons et des dauphins. Les réserves de « Sanganeb » et de « Dungonab » sont inscrites au patrimoine mondial depuis 2016 !'
+          },
+          questions: {
+            young: [
+              { q: 'Au bord de quelle mer se trouve la ville de Port-Soudan ?', a: ['La mer Rouge', 'La Méditerranée', 'La mer Noire'], hint: 'Le nom de l’État te donne la réponse !' },
+              { q: 'Quelle est la capitale de l’État de la Mer-Rouge ?', a: ['Port-Soudan', 'Souakin', 'Kassala'], hint: 'Son nom contient le mot « Soudan ».' }
+            ],
+            older: [
+              { q: 'Avec quelle pierre étaient bâties les anciennes maisons de Souakin ?', a: ['Le corail', 'Le marbre', 'La brique rouge'], hint: 'Il pousse au fond de la mer et forme des récifs colorés.' },
+              { q: 'Quel est aujourd’hui le principal port du Soudan ?', a: ['Port-Soudan', 'Souakin', 'Kosti'], hint: 'Sa construction a commencé en 1905.' }
+            ]
+          }
+        },
+
+        /* ---------------- Voyage au Nord ---------------- */
+        rivernile: {
+          name: 'État du Nil',
+          card: {
+            capital: 'Ad-Damer',
+            cities: 'Ad-Damer, Atbara, Chendi, Berber, Abou Hamed',
+            landmarks: 'Les pyramides de Begrawiya (l’ancienne Méroé), les temples de Naqa et de Moussawarat es-Soufra, et la confluence de l’Atbara avec le Nil',
+            history: 'Pendant des centaines d’années, l’ancienne ville de Méroé, près de Begrawiya, a été la capitale du royaume de Koush. De puissantes reines y ont régné : on les appelait les « Kandaka ». À l’époque moderne, Atbara est devenue la ville du chemin de fer au Soudan.',
+            fact: 'Le Soudan compte plus de pyramides que l’Égypte ! Rien qu’à Begrawiya, il y en a des dizaines, petites et aux flancs très pointus.'
+          },
+          questions: {
+            young: [
+              { q: 'Que voit-on dans la région de Begrawiya ?', a: ['Des pyramides anciennes', 'Des gratte-ciel', 'Des chutes d’eau'], hint: 'Des constructions en pierre, pointues, qui datent de l’époque des anciens rois.' },
+              { q: 'Quelle ville est célèbre pour son chemin de fer et ses trains ?', a: ['Atbara', 'Souakin', 'El Geneina'], hint: 'Elle porte le même nom que la rivière qui rejoint le Nil à cet endroit.' }
+            ],
+            older: [
+              { q: 'Quel titre portaient les reines qui ont régné sur le royaume de Méroé ?', a: ['Kandaka', 'Sultane', 'Princesse'], hint: 'Un ancien titre nubien dont les Soudanais sont encore fiers aujourd’hui.' },
+              { q: 'Quelle rivière se jette dans le Nil à Atbara ?', a: ['L’Atbara', 'Le Nil Bleu', 'Le Bahr al-Arab'], hint: 'Elle porte le même nom que la ville.' }
+            ]
+          }
+        },
+        northern: {
+          name: 'État du Nord',
+          card: {
+            capital: 'Dongola',
+            cities: 'Dongola, Merowe, Karima, Ouadi Halfa, Ad-Dabba',
+            landmarks: 'Le Djebel Barkal et le temple d’Amon, les pyramides de Nouri, la deffufa de Kerma, le Vieux-Dongola et le barrage de Merowe',
+            history: 'C’est à Kerma qu’est né le royaume de Koush, il y a plus de quatre mille ans ; plus tard, Napata, au pied du Djebel Barkal, est devenue sa capitale. C’est d’ici qu’est parti le roi Piye : les Koushites ont alors régné sur toute l’Égypte pendant une centaine d’années.',
+            fact: 'Le Djebel Barkal était une montagne sacrée pour les anciens Koushites. À son pied se trouve le temple d’Amon, et le site est inscrit au patrimoine mondial depuis 2003 !'
+          },
+          questions: {
+            young: [
+              { q: 'Comment s’appelle l’ancienne montagne sacrée située près de la ville de Karima ?', a: ['Le Djebel Barkal', 'Le Djebel Marra', 'Le Djebel Moya'], hint: 'Son nom commence par la lettre B.' },
+              { q: 'Quelle est la capitale de l’État du Nord ?', a: ['Dongola', 'Atbara', 'El Obeid'], hint: 'Son nom commence par la lettre D.' }
+            ],
+            older: [
+              { q: 'Comment s’appelle le grand barrage construit sur le Nil dans l’État du Nord ?', a: ['Le barrage de Merowe', 'Le barrage de Sennar', 'Le barrage de Roseires'], hint: 'Il porte le nom d’une ancienne cité archéologique.' },
+              { q: 'Quel ancien royaume a eu pour capitale Kerma, puis Napata ?', a: ['Le royaume de Koush', 'Le Sultanat bleu', 'Le sultanat des Four'], hint: 'Son nom est court : cinq lettres.' }
+            ]
+          }
+        },
+
+        /* ---------------- Voyage au Kordofan ---------------- */
+        nkordofan: {
+          name: 'Kordofan-du-Nord',
+          card: {
+            capital: 'El Obeid',
+            cities: 'El Obeid, Oum Rouaba, Bara, Er-Rahad, Sodiri',
+            landmarks: 'Le marché de la gomme arabique à El Obeid, les forêts d’acacias hashab et le site de la bataille de Shaykan',
+            history: 'En 1883, l’armée de l’imam al-Mahdi a pris la ville d’El Obeid, puis a remporté tout près la bataille de Shaykan contre une grande armée commandée par Hicks Pacha : ce fut l’une des plus célèbres victoires de la révolution mahdiste.',
+            fact: 'Le Soudan est l’un des plus grands producteurs de gomme arabique au monde. Une grande partie vient des acacias hashab du Kordofan, et on l’utilise pour fabriquer des bonbons et des médicaments !'
+          },
+          questions: {
+            young: [
+              { q: 'Que récolte-t-on sur les acacias hashab ?', a: ['La gomme arabique', 'Les dattes', 'Les oranges'], hint: 'Une substance collante qui sort du tronc de l’arbre.' },
+              { q: 'Quelle est la capitale de l’État du Kordofan-du-Nord ?', a: ['El Obeid', 'Kadugli', 'El Fasher'], hint: 'En arabe, son nom veut dire « le blanc », comme la couleur du lait.' }
+            ],
+            older: [
+              { q: 'Quelle célèbre bataille a eu lieu près d’El Obeid en 1883 ?', a: ['Shaykan', 'Kerreri', 'Badr'], hint: 'Son nom commence par la lettre S.' },
+              { q: 'Quelle ville surnomme-t-on « la fiancée des sables » ?', a: ['El Obeid', 'Port-Soudan', 'Kassala'], hint: 'La capitale du Kordofan-du-Nord.' }
+            ]
+          }
+        },
+        skordofan: {
+          name: 'Kordofan-du-Sud',
+          card: {
+            capital: 'Kadugli',
+            cities: 'Kadugli, Dilling, Talodi, Abou Djoubeiha, Rashad',
+            landmarks: 'Les monts Nouba, la ville de Dilling et son université, et les forêts et plaines verdoyantes d’Abou Djoubeiha',
+            history: 'Les monts Nouba sont la terre ancestrale de nombreux peuples, chacun avec sa langue, ses coutumes et ses chansons. Depuis très longtemps, on vit entre ces montagnes et on cultive leurs terrasses.',
+            fact: 'Dans les monts Nouba, on organise de célèbres tournois de lutte traditionnelle : les villageois s’y rassemblent, chantent et dansent pour fêter les champions !'
+          },
+          questions: {
+            young: [
+              { q: 'Comment s’appellent les célèbres montagnes du Kordofan-du-Sud ?', a: ['Les monts Nouba', 'Les monts Taka', 'Les monts Ingessana'], hint: 'Elles portent le nom du peuple nouba.' },
+              { q: 'Quel sport traditionnel est célèbre dans les monts Nouba ?', a: ['La lutte', 'Le ski', 'La plongée'], hint: 'Deux adversaires s’affrontent jusqu’à ce que l’un fasse tomber l’autre.' }
+            ],
+            older: [
+              { q: 'Quelle est la capitale de l’État du Kordofan-du-Sud ?', a: ['Kadugli', 'Dilling', 'El Obeid'], hint: 'Son nom commence par la lettre K.' },
+              { q: 'Quel pays est voisin du Kordofan-du-Sud, au sud ?', a: ['Le Soudan du Sud', 'Le Tchad', 'L’Éthiopie'], hint: 'Un pays voisin dont le nom ressemble beaucoup à celui du Soudan.' }
+            ]
+          }
+        },
+        wkordofan: {
+          name: 'Kordofan-Occidental',
+          card: {
+            capital: 'El Fula',
+            cities: 'El Fula, En-Nahud, Babanusa, Al-Muglad, Lagawa',
+            landmarks: 'Le marché au bétail d’En-Nahud, la gare de Babanusa et les champs pétroliers',
+            history: 'Au Kordofan-Occidental vivent des éleveurs qui se déplacent avec leurs troupeaux entre le nord et le sud, au rythme des pluies et des pâturages. Le chemin de fer y passe à Babanusa, en route vers Nyala, au Darfour.',
+            fact: 'Les célèbres moutons « hamari » doivent leur nom à la tribu des Hamar, de la région d’En-Nahud, et beaucoup sont exportés vers d’autres pays !'
+          },
+          questions: {
+            young: [
+              { q: 'Qu’est-ce qui fait la renommée de la ville d’En-Nahud ?', a: ['Le commerce des moutons et du bétail', 'La pêche', 'La fabrication de voitures'], hint: 'Des animaux couverts de laine qui font « bêêê ».' },
+              { q: 'Quelle est la capitale de l’État du Kordofan-Occidental ?', a: ['El Fula', 'En-Nahud', 'Nyala'], hint: 'Son nom ressemble au mot « foul », le plat de fèves.' }
+            ],
+            older: [
+              { q: 'Comment s’appelle la célèbre race de moutons qui doit son nom à la tribu des Hamar ?', a: ['Le hamari', 'Le kabbashi', 'Le baggari'], hint: 'Son nom vient de celui de la tribu elle-même.' },
+              { q: 'Quelle plante cultivée dans les sables du Kordofan donne des graines qu’on mange grillées ?', a: ['L’arachide', 'Le riz', 'La pomme'], hint: 'On casse sa coque avec les doigts ; en arabe, on l’appelle « foul soudani », la fève du Soudan.' }
+            ]
+          }
+        },
+
+        /* ---------------- Voyage au Darfour ---------------- */
+        edarfur: {
+          name: 'Darfour-Oriental',
+          card: {
+            capital: 'Ed-Daein',
+            cities: 'Ed-Daein, Adila, Abou Karinka, Abou Jabra',
+            landmarks: 'Le Bahr al-Arab, les grands marchés au bétail et la gare d’Ed-Daein',
+            history: 'L’État du Darfour-Oriental a été créé en 2012. Ses habitants sont réputés pour l’élevage des vaches : à la saison sèche, ils les mènent vers le sud, jusqu’au Bahr al-Arab, à la recherche d’eau et d’herbe.',
+            fact: 'Le « Bahr al-Arab » coule au sud de l’État. Son nom veut dire « mer des Arabes », mais ce n’est pas une mer : c’est une rivière où les troupeaux viennent boire en été !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle est la capitale de l’État du Darfour-Oriental ?', a: ['Ed-Daein', 'Nyala', 'Zalingei'], hint: 'Son nom commence par « Ed ».' },
+              { q: 'Quels animaux de nombreux habitants du Darfour-Oriental élèvent-ils ?', a: ['Des vaches', 'Des pingouins', 'Des dauphins'], hint: 'Elles nous donnent du lait et font « meuh ».' }
+            ],
+            older: [
+              { q: 'Comment s’appelle la rivière qui coule au sud du Darfour-Oriental ?', a: ['Le Bahr al-Arab', 'L’Atbara', 'Le Dinder'], hint: 'Son nom contient le mot « bahr », qui veut dire « mer », alors que c’est une rivière.' },
+              { q: 'Quel pays est voisin du Darfour-Oriental, au sud ?', a: ['Le Soudan du Sud', 'L’Égypte', 'La Libye'], hint: 'Un pays voisin dont le nom ressemble beaucoup à celui du Soudan.' }
+            ]
+          }
+        },
+        sdarfur: {
+          name: 'Darfour-du-Sud',
+          card: {
+            capital: 'Nyala',
+            cities: 'Nyala, Kass, Buram, Tulus',
+            landmarks: 'Le grand marché de Nyala, l’oued de Nyala, la gare et la réserve naturelle de Radom',
+            history: 'Le chemin de fer est arrivé à Nyala à la fin des années 1950 : la ville est devenue le terminus du train dans l’ouest du Soudan, et elle a tant grandi qu’elle compte aujourd’hui parmi les plus grandes villes du pays.',
+            fact: 'Au sud de l’État, la « réserve de Radom », à la frontière de la Centrafrique, est l’une des plus grandes réserves naturelles du Soudan : on y trouve des forêts, des rivières et des animaux sauvages !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle est la capitale de l’État du Darfour-du-Sud ?', a: ['Nyala', 'El Fasher', 'El Geneina'], hint: 'Son nom commence par la lettre N.' },
+              { q: 'Quel moyen de transport arrive à Nyala sur des rails ?', a: ['Le train', 'Le bateau', 'L’avion'], hint: 'Il siffle : tchou-tchou !' }
+            ],
+            older: [
+              { q: 'Comment s’appelle la grande réserve naturelle du Darfour-du-Sud ?', a: ['La réserve de Radom', 'Le parc national de Dinder', 'La réserve de Sanganeb'], hint: 'Son nom commence par la lettre R.' },
+              { q: 'Où se trouve le terminus du chemin de fer dans l’ouest du Soudan ?', a: ['À Nyala', 'À Port-Soudan', 'À Ouadi Halfa'], hint: 'C’est la capitale de l’État que nous visitons en ce moment.' }
+            ]
+          }
+        },
+        cdarfur: {
+          name: 'Darfour-Central',
+          card: {
+            capital: 'Zalingei',
+            cities: 'Zalingei, Garsila, Nertiti, Oum Dukhun',
+            landmarks: 'Le Djebel Marra et son cratère volcanique, les deux lacs de Deriba, et les cascades et vergers sur les flancs de la montagne',
+            history: 'Le Djebel Marra était le cœur de l’ancien sultanat des Four ; tout autour, les Four vivaient en cultivant ses pentes fertiles. Aujourd’hui, Zalingei possède une université qui porte le nom de la ville.',
+            fact: 'Le Djebel Marra est un volcan endormi : c’est le plus haut sommet du Soudan, à plus de 3 000 mètres d’altitude ! Dans son cratère se trouvent deux lacs bleus appelés « Deriba ».'
+          },
+          questions: {
+            young: [
+              { q: 'Comment s’appelle la haute montagne du Darfour-Central ?', a: ['Le Djebel Marra', 'Le Djebel Barkal', 'Les monts Taka'], hint: 'Son nom commence par la lettre M.' },
+              { q: 'Quelle est la capitale de l’État du Darfour-Central ?', a: ['Zalingei', 'Nyala', 'Ed-Daein'], hint: 'Son nom commence par la lettre Z.' }
+            ],
+            older: [
+              { q: 'Quel est le plus haut sommet du Soudan ?', a: ['Le Djebel Marra', 'Le Djebel Barkal', 'Le Djebel Moya'], hint: 'Un volcan endormi du Darfour.' },
+              { q: 'Que trouve-t-on dans le cratère du Djebel Marra ?', a: ['Deux lacs', 'Une grande ville', 'Un désert de sable'], hint: 'De l’eau bleue rassemblée dans le cratère, qu’on appelle « Deriba ».' }
+            ]
+          }
+        },
+        wdarfur: {
+          name: 'Darfour-Occidental',
+          card: {
+            capital: 'El Geneina',
+            cities: 'El Geneina, Kereinik, Habila, Beida',
+            landmarks: 'L’oued Kaja et ses vergers, et le palais des sultans du Dar Masalit à El Geneina',
+            history: 'El Geneina était la capitale du « sultanat du Dar Masalit ». En 1910, le sultan Tadj ad-Din a résisté à l’armée française venue du Tchad et il est tombé au combat ; quelques années plus tard, le Dar Masalit a rejoint le Soudan.',
+            fact: 'Le nom « El Geneina » veut dire « le petit jardin » : on l’a appelée ainsi à cause des nombreux vergers et arbres qui l’entourent !'
+          },
+          questions: {
+            young: [
+              { q: 'Que veut dire le nom de la ville d’« El Geneina » ?', a: ['Le petit jardin', 'La grande mer', 'La haute montagne'], hint: 'Un endroit plein d’arbres et de fleurs.' },
+              { q: 'Quelle est la capitale de l’État du Darfour-Occidental ?', a: ['El Geneina', 'El Fasher', 'Kadugli'], hint: 'Son nom veut dire « le jardin ».' }
+            ],
+            older: [
+              { q: 'Comment s’appelait le sultanat dont El Geneina était la capitale ?', a: ['Le sultanat du Dar Masalit', 'Le Sultanat bleu', 'Le royaume de Koush'], hint: 'Il porte le nom de la tribu des Masalit.' },
+              { q: 'Quel pays est voisin du Darfour-Occidental, à l’ouest ?', a: ['Le Tchad', 'L’Éthiopie', 'L’Égypte'], hint: 'Un grand lac porte son nom.' }
+            ]
+          }
+        },
+        ndarfur: {
+          name: 'Darfour-du-Nord',
+          card: {
+            capital: 'El Fasher',
+            cities: 'El Fasher, Kutum, Mellit, Kabkabiya, At-Tina',
+            landmarks: 'Le palais du sultan Ali Dinar (musée d’El Fasher), le Djebel Meidob et l’oued Howar dans le désert',
+            history: 'El Fasher était la capitale du « sultanat des Four ». Le sultan Ali Dinar l’a gouverné de 1898 à 1916, date à laquelle l’armée britannique est entrée au Darfour et l’a rattaché au Soudan.',
+            fact: 'Chaque année, le sultan Ali Dinar envoyait à La Mecque la kiswa, l’étoffe qui recouvre la Kaaba. On lui attribue aussi des puits creusés pour les pèlerins près de Médine, qu’on appelle encore « Abyar Ali », les puits d’Ali !'
+          },
+          questions: {
+            young: [
+              { q: 'Quelle est la capitale de l’État du Darfour-du-Nord ?', a: ['El Fasher', 'Nyala', 'El Obeid'], hint: 'Après « El », son nom commence par la lettre F.' },
+              { q: 'Qu’envoyait chaque année le sultan Ali Dinar à La Mecque ?', a: ['La kiswa de la Kaaba', 'Un train', 'Un bateau de pêche'], hint: 'Une belle étoffe noire qui recouvre la Kaaba.' }
+            ],
+            older: [
+              { q: 'Comment s’appelait le sultanat dont El Fasher était la capitale ?', a: ['Le sultanat des Four', 'Le Sultanat bleu', 'Le sultanat du Dar Masalit'], hint: 'Il porte le nom du peuple four, qui a aussi donné son nom au « Dar Four », le Darfour.' },
+              { q: 'Quel célèbre sultan a gouverné le Darfour depuis la ville d’El Fasher ?', a: ['Ali Dinar', 'Amara Dunqas', 'Piye'], hint: 'C’est lui qui envoyait la kiswa de la Kaaba à La Mecque.' }
+            ]
+          }
+        }
+      },
+
+
+      // أسماء المدن على الطرق (via) — المفتاح هو الاسم العربي كما في roads
+      towns: {
+        'سوبا': 'Soba', 'الكاملين': 'Al-Kamlin', 'الحصاحيصا': 'Al-Hasahisa', 'سنار': 'Sennar', 'سنجة': 'Singa',
+        'ربك': 'Rabak', 'كوستي': 'Kosti', 'الدمازين': 'Ad-Damazin', 'الشُّوَك': 'Ash-Showak', 'هيا': 'Haiya',
+        'سنكات': 'Sinkat', 'عطبرة': 'Atbara', 'مروي': 'Merowe', 'الدبة': 'Ad-Dabba', 'الدلنج': 'Dilling',
+        'لقاوة': 'Lagawa', 'كاس': 'Kass', 'كبكابية': 'Kabkabiya'
+      },
+      // كلمات عربية في حقوق الصور (credit)
+      credits: { 'حكومة السودان': 'Gouvernement du Soudan', 'ملكية عامة': 'domaine public', 'محسن الفكي': 'Mohsen Elfaki' },
+
+      map: {
+        unit: 'État',
+        shapes: {
+          khartoum: { name: 'Khartoum' }, jazeera: { name: 'Al-Jazira' }, sennar: { name: 'Sennar' },
+          whitenile: { name: 'Nil-Blanc' }, bluenile: { name: 'Nil-Bleu' }, redsea: { name: 'Mer-Rouge' },
+          kassala: { name: 'Kassala' }, gedaref: { name: 'Gedaref' }, northern: { name: 'État du Nord' },
+          rivernile: { name: 'État du Nil' }, nkordofan: { name: 'Kordofan-du-Nord' }, skordofan: { name: 'Kordofan-du-Sud' },
+          wkordofan: { name: 'Kordofan-Occidental' }, ndarfur: { name: 'Darfour-du-Nord' }, sdarfur: { name: 'Darfour-du-Sud' },
+          wdarfur: { name: 'Darfour-Occidental' }, cdarfur: { name: 'Darfour-Central' }, edarfur: { name: 'Darfour-Oriental' }
+        }
+      }
+    },
+
+
+    shared: {
+      geo: {
+        label: 'Géographie du Soudan',
+        young: [
+          { q: 'Sur quel continent se trouve le Soudan ?', a: ['L’Afrique', 'L’Asie', 'L’Europe'], hint: 'Le continent où coule le Nil.' },
+          { q: 'Quel est le plus long fleuve qui traverse le Soudan ?', a: ['Le Nil', 'L’Atbara', 'Le Gash'], hint: 'Il naît de la rencontre du Nil Bleu et du Nil Blanc, à Khartoum.' },
+          { q: 'Au bord de quelle mer se trouve le Soudan ?', a: ['La mer Rouge', 'La mer Noire', 'La Méditerranée'], hint: 'La ville de Port-Soudan se trouve sur ses rives.' },
+          { q: 'Quel pays est voisin du Soudan, au nord ?', a: ['L’Égypte', 'Le Tchad', 'L’Éthiopie'], hint: 'On y trouve les pyramides de Gizeh, et le Nil le traverse avant d’arriver à la mer.' },
+          { q: 'Dans quelle direction coule le Nil au Soudan ?', a: ['Vers le nord', 'Vers le sud', 'Vers l’ouest'], hint: 'Il coule jusqu’en Égypte, puis jusqu’à la mer.' },
+          { q: 'Comment s’appelle l’île située à la confluence des deux Nils, à Khartoum ?', a: ['L’île de Tuti', 'L’île d’Aba', 'L’île de Souakin'], hint: 'Son nom commence par la lettre T.' },
+          { q: 'Quel immense désert couvre le nord du Soudan ?', a: ['Le Sahara', 'Le Rub al-Khali', 'Le désert de Gobi'], hint: 'C’est le plus grand désert chaud du monde.' },
+          { q: 'Combien d’États compte le Soudan ?', a: ['18', '10', '25'], hint: 'Compte les États colorés sur la carte !' }
+        ],
+        older: [
+          { q: 'Quel pays voisin s’est séparé du Soudan en 2011 ?', a: ['Le Soudan du Sud', 'L’Égypte', 'La Libye'], hint: 'Son nom contient le mot « Soudan ».' },
+          { q: 'Quelles sont les trois villes qu’on appelle « la capitale triangulaire » ?', a: ['Khartoum, Omdourman et Khartoum-Nord', 'Kassala, Gedaref et Port-Soudan', 'Nyala, El Fasher et El Geneina'], hint: 'Trois villes qui se font face, à la confluence des deux Nils.' },
+          { q: 'Quelle ville, à l’ouest du Nil, face à Khartoum, est surnommée « la capitale nationale » ?', a: ['Omdourman', 'Khartoum-Nord', 'Wad Madani'], hint: 'On y trouve le mausolée de l’imam al-Mahdi.' },
+          { q: 'De quel côté du Soudan se trouve la mer Rouge ?', a: ['À l’est', 'À l’ouest', 'Au sud'], hint: 'Du côté où le soleil se lève.' },
+          { q: 'De quel côté du Soudan se trouve le Darfour ?', a: ['À l’ouest', 'À l’est', 'Au nord'], hint: 'Du côté où le soleil se couche.' },
+          { q: 'Combien de pays sont voisins du Soudan ?', a: ['7', '4', '10'], hint: 'L’Égypte, la Libye, le Tchad, la Centrafrique, le Soudan du Sud, l’Éthiopie et l’Érythrée.' },
+          { q: 'Comment s’appelle la sixième cataracte du Nil, la plus proche de Khartoum ?', a: ['La cataracte de Sabaloka', 'La cataracte de Kajbar', 'La cataracte de Dal'], hint: 'Elle se trouve dans une gorge rocheuse au nord de Khartoum, et son nom commence par la lettre S.' },
+          { q: 'Comment s’appelle la partie soudanaise du lac formé par le Haut Barrage ?', a: ['Le lac de Nubie', 'Le lac Tana', 'Le lac Victoria'], hint: 'Il porte le nom du peuple qui vivait sur les rives du Nil, dans le Nord.' }
+        ]
+      },
+      history: {
+        label: 'Histoire du Soudan',
+        young: [
+          { q: 'Quel jour les Soudanais fêtent-ils l’indépendance ?', a: ['Le 1er janvier', 'Le 1er mai', 'Le 1er septembre'], hint: 'Le premier jour de la nouvelle année.' },
+          { q: 'Lequel de ces pays compte le plus de pyramides ?', a: ['Le Soudan', 'L’Égypte', 'La Grèce'], hint: 'Notre pays ! Il en compte plus de deux cents, petites, construites par les rois de Koush.' },
+          { q: 'Qu’est-ce qui a rendu célèbre l’ancienne ville de Méroé ?', a: ['Le travail du fer', 'La fabrication de voitures', 'La construction d’avions'], hint: 'Un métal solide avec lequel on fabriquait des outils.' },
+          { q: 'Qui a dirigé la révolution mahdiste ?', a: ['L’imam Mohammed Ahmed al-Mahdi', 'Le sultan Ali Dinar', 'Amara Dunqas'], hint: 'On l’appelle « al-Mahdi », et son mausolée se trouve à Omdourman.' },
+          { q: 'Comment appelait-on les reines courageuses qui ont régné sur le royaume de Koush ?', a: ['Les Kandaka', 'Les princesses', 'Les sultanes'], hint: 'Un titre dont les Soudanais sont encore fiers aujourd’hui.' }
+        ],
+        older: [
+          { q: 'Quel ancien royaume a construit les pyramides de Begrawiya ?', a: ['Le royaume de Koush', 'Le Sultanat bleu', 'Le sultanat des Four'], hint: 'Son nom est court : cinq lettres.' },
+          { q: 'Comment s’appelle l’écriture inventée par les habitants de l’ancien royaume de Méroé ?', a: ['L’écriture méroïtique', 'L’écriture coufique', 'L’alphabet latin'], hint: 'Elle porte le nom de leur ville.' },
+          { q: 'Dans quelle ville l’imam al-Mahdi est-il enterré ?', a: ['Omdourman', 'El Obeid', 'Souakin'], hint: 'La ville surnommée « la capitale nationale ».' },
+          { q: 'Quelle grande bataille a eu lieu près d’Omdourman en 1898 ?', a: ['Kerreri', 'Shaykan', 'Badr'], hint: 'Elle porte le nom d’une colline au nord d’Omdourman, qui commence par la lettre K.' },
+          { q: 'Qui a été le premier Premier ministre du Soudan ?', a: ['Ismaïl al-Azhari', 'Mohammed Ahmed Mahjoub', 'Abdallah Khalil'], hint: 'Il a hissé le drapeau de l’indépendance le 1er janvier 1956, et son prénom est « Ismaïl ».' },
+          { q: 'Comment s’appelle le roi koushite qui a conquis l’Égypte il y a environ 2 700 ans ?', a: ['Piye', 'Ramsès II', 'Alexandre le Grand'], hint: 'Un roi de Napata, près du Djebel Barkal, dont le nom commence par la lettre P.' },
+          { q: 'Quel royaume nubien chrétien avait pour capitale Soba, près de Khartoum ?', a: ['Le royaume d’Alwa', 'Le royaume de Makuria', 'Le royaume de Nobatia'], hint: 'Son nom commence par la lettre A.' },
+          { q: 'Avec qui Amara Dunqas s’est-il allié pour fonder le Sultanat bleu ?', a: ['Abdallah Jammaa', 'Ali Dinar', 'Zubeir Pacha'], hint: 'Le chef des Abdallab, dont le prénom est « Abdallah ».' }
+        ]
+      },
+      culture: {
+        label: 'Culture et patrimoine',
+        young: [
+          { q: 'Quel oiseau figure sur l’emblème du Soudan ?', a: ['Le serpentaire (saqr al-jadiane)', 'La colombe', 'Le perroquet'], hint: 'C’est notre guide dans ce voyage !' },
+          { q: 'Quelles sont les couleurs du drapeau du Soudan ?', a: ['Rouge, blanc, noir et vert', 'Bleu et jaune seulement', 'Orange et violet'], hint: 'Trois bandes et un triangle vert.' },
+          { q: 'Quel plat soudanais est fait de farine de sorgho cuite sur une plaque (saj) ?', a: ['La kisra', 'La pizza', 'Les sushis'], hint: 'De fines galettes qu’on mange avec une sauce (mullah).' },
+          { q: 'Comment s’appelle le voile que la femme soudanaise enroule autour de son corps et de sa tête ?', a: ['Le toob', 'Le kimono', 'Le sari'], hint: 'Son nom ressemble au mot arabe « thawb », qui veut dire vêtement.' },
+          { q: 'Comment s’appelle la longue tunique blanche que portent les hommes au Soudan ?', a: ['La jalabiya', 'Le kimono', 'Le manteau d’hiver'], hint: 'On la porte le jour de l’Aïd, avec le turban (imma).' },
+          { q: 'Avec quelle fleur prépare-t-on une boisson rouge au Soudan ?', a: ['L’hibiscus (karkadé)', 'Le tournesol', 'Le jasmin'], hint: 'Une fleur rouge foncé ; sa boisson a un goût un peu acidulé.' },
+          { q: 'Quelle boisson soudanaise du ramadan est préparée à base de sorgho ?', a: ['Le helou-mor', 'Le thé vert', 'Le jus de pomme'], hint: 'Son nom, « doux-amer », réunit deux goûts opposés !' },
+          { q: 'Comment s’appelle la monnaie du Soudan ?', a: ['La livre soudanaise', 'Le dollar', 'Le yen'], hint: 'La monnaie de l’Égypte porte le même nom : la livre.' }
+        ],
+        older: [
+          { q: 'Par quels mots commence l’hymne national soudanais ?', a: ['« Nous sommes les soldats de Dieu, les soldats de la patrie »', '« Mon pays, mon pays, mon pays »', '« Ma patrie, ma patrie »'], hint: 'En arabe, il commence par « Nahnou », qui veut dire « Nous ».' },
+          { q: 'Quel est le surnom de l’équipe nationale de football du Soudan ?', a: ['Les Faucons de Jadiane', 'Les Lions de l’Atlas', 'Les Pharaons'], hint: 'Il vient de l’oiseau qui figure sur l’emblème du pays.' },
+          { q: 'De quelle couleur est le triangle du drapeau soudanais ?', a: ['Vert', 'Bleu', 'Jaune'], hint: 'La couleur des cultures et des champs.' },
+          { q: 'Quel plat soudanais est une pâte cuite, façonnée en dôme et nappée de sauce ?', a: ['L’assida', 'La kisra', 'Les vermicelles'], hint: 'Son nom commence par la lettre A.' },
+          { q: 'Que met la mariée soudanaise sur ses mains et ses pieds pour les décorer ?', a: ['Le henné', 'La boue', 'L’encre'], hint: 'Une plante qu’on moud et qui colore la peau en brun-rouge.' },
+          { q: 'Comment s’appelle le pot en terre cuite dans lequel on prépare le café soudanais ?', a: ['La jebena', 'La carafe en verre', 'Le samovar'], hint: 'Son nom ressemble au mot arabe « jibna », qui veut dire fromage.' },
+          { q: 'Qui a écrit les paroles de l’hymne national soudanais ?', a: ['Ahmed Mohammed Saleh', 'Tayeb Salih', 'Mohammed al-Fayturi'], hint: 'Un poète et pédagogue dont le prénom est « Ahmed ».' }
+        ]
+      },
+      nature: {
+        label: 'Nature du Soudan',
+        young: [
+          { q: 'Comment les Soudanais appellent-ils la saison des pluies ?', a: ['Le kharif', 'L’hiver', 'Le printemps'], hint: 'Elle commence vers juillet, et la terre devient toute verte.' },
+          { q: 'Comment s’appelle la grande tempête de poussière qui souffle sur Khartoum ?', a: ['Le haboob', 'La neige', 'Le cyclone'], hint: 'Son nom vient du verbe arabe « habba » : le vent souffle.' },
+          { q: 'Quel arbre géant du Kordofan stocke l’eau dans son tronc ?', a: ['Le tebeldi (baobab)', 'Le palmier', 'Le pin'], hint: 'Son tronc est très large, et son nom commence par la lettre T.' },
+          { q: 'Quel arbre pousse en abondance sur les rives du Nil, dans le Nord, et donne des fruits que l’on mange ?', a: ['Le palmier', 'Le pommier', 'Le cerisier'], hint: 'Ses fruits sont les dattes sucrées.' },
+          { q: 'Quel animal permet aux bergers de traverser les déserts du Soudan, et qu’on appelle « le vaisseau du désert » ?', a: ['Le chameau', 'Le cheval', 'L’éléphant'], hint: 'Il a une bosse et peut rester des jours sans boire.' }
+        ],
+        older: [
+          { q: 'Quel grand animal vit dans le Nil, avec des mâchoires puissantes et une peau rugueuse ?', a: ['Le crocodile', 'L’ours blanc', 'Le kangourou'], hint: 'Il se prélasse au soleil sur la rive du fleuve.' },
+          { q: 'Qu’est-ce qui crée les belles couleurs sous l’eau de la mer Rouge, près de Port-Soudan ?', a: ['Les récifs de corail', 'La glace', 'Les sables mouvants'], hint: 'C’est avec lui qu’on a bâti les anciennes maisons de Souakin.' },
+          { q: 'Quel pays est le premier producteur mondial de gomme arabique ?', a: ['Le Soudan', 'Le Nigeria', 'Le Tchad'], hint: 'Notre pays ! La plus grande partie vient des acacias hashab du Kordofan.' },
+          { q: 'Quel animal marin paisible vit dans la mer Rouge, près des côtes du Soudan, et se nourrit d’herbes ?', a: ['Le dugong (vache marine)', 'L’ours blanc', 'Le manchot'], hint: 'Son autre nom contient le mot « vache ».' },
+          { q: 'Quelle réserve marine, près de Port-Soudan, est inscrite au patrimoine mondial de l’UNESCO ?', a: ['Sanganeb', 'Dinder', 'Radom'], hint: 'Un atoll de corail au milieu de la mer Rouge, dont le nom commence par la lettre S.' },
+          { q: 'Comment s’appelle la baie, près de Port-Soudan, où vivent les dugongs et où nichent les oiseaux marins ?', a: ['La baie de Dungonab', 'Le golfe d’Aqaba', 'Le golfe d’Aden'], hint: 'Son nom commence par la lettre D.' }
+        ]
+      }
+    }
+});
+
+/* =====================================================================
    3) المحرك  —  ENGINE
    لا يذكر أي دولة. يقرأ كل شيء من COUNTRY_PACK و SHARED_QUESTIONS.
    ===================================================================== */
 (function () {
   'use strict';
-  const P = COUNTRY_PACK, S = SHARED_QUESTIONS;
+  // P و S تتغيّران عند تبديل اللغة (انظر applyLang)
+  let P = COUNTRY_PACK, S = SHARED_QUESTIONS;
 
   const SETTINGS = {
     showReviewTags: true   // اجعلها false قبل النشر لإخفاء شارات «للمراجعة»
   };
+
+  /* ---------- نصوص الواجهة بكل لغة ---------- */
+  const UI = {
+    ar: {
+      dir: 'rtl', ages: ['6 – 8 سنوات', '9 – 13 سنة'],
+      fields: { capital: 'العاصمة', cities: 'أشهر المدن', landmarks: 'أبرز المعالم', history: 'من التاريخ', fact: 'معلومة مدهشة' },
+      cheers: ['أحسنت!', 'ممتاز!', 'رائع!', 'يا لك من بطل!', 'إجابة صحيحة!'],
+      hello: g => `مرحباً! أنا ${g} 👋<br>هيّا نسافر معاً ونتعرّف على بلادنا!`,
+      saved: n => `رحلتك محفوظة: ${n} ⭐ — اختر عمرك لتكمل`,
+      howOld: 'كم عمرك؟', soundOff: '🔇 الصوت مغلق', soundOn: '🔊 الصوت يعمل', restart: '↺ ابدأ من جديد',
+      resetQ: 'هل تريد أن تبدأ من جديد؟', resetNote: 'ستعود النجوم والبطاقات إلى البداية.',
+      resetNo: 'لا، أكمل رحلتي', resetYes: 'نعم، ابدأ من جديد',
+      mapOf: c => `خريطة ${c}`, fullMap: c => `خريطة ${c} كاملة`, close: 'إغلاق', back: 'رجوع',
+      tapUnit: u => `اضغط على أي ${u} لتعرف اسمها! 👆`,
+      thisIs: (u, n) => `هذه ${u} <b>«${n}»</b>`,
+      visited: n => ` — زرناها معاً ⭐ ${n}`, willVisit: t => ` — سنزورها في ${t} 🚙`, soonIn: t => ` — من ${t}، قريباً! 🔒`,
+      soon: 'قريباً!', chipSoon: '· قريباً',
+      tapCur: n => `اضغط على «${n}» التي تنبض لنجيب عن سؤالها!`,
+      allHero: 'أنت بطل! أكملت كل الرحلات 🏅 اضغط على أي محطة لترى بطاقتها.',
+      tripFinished: 'أكملت هذه الرحلة! انتقل إلى رحلتك التالية من الأعلى.',
+      allAvail: 'أحسنت! أكملت كل الرحلات المتاحة 🎉 رحلات جديدة قادمة قريباً.',
+      home: 'الرئيسية', album: 'ألبوم الرحلة', sound: 'الصوت',
+      tripLocked: 'هذه الرحلة ستفتح قريباً! 🔒', notYet: 'لم نصل إلى هنا بعد 😊 اضغط على المحطة التي تنبض!',
+      drive: n => `هيّا نركب السيارة إلى «${n}» على الطريق القومي! 🚙`, passing: n => `نمرّ الآن بمدينة «${n}» 🏘️`,
+      qOf: (i, n) => `سؤال ${i} من ${n}`,
+      collect: n => `اجمع ${n} نجوم على الأقل لتنتقل إلى الولاية التالية! 💪`,
+      think: 'فكّر جيداً، أنا واثق أنك تعرف! 💪', wantHint: '💡 أريد تلميحاً', hint: '💡 تلميح: ',
+      defHint: 'انظر إلى الاختيارات جيداً وفكّر في كل واحد منها.',
+      tryAgain: 'قريب جداً! جرّب مرة أخرى 😊<br>', pressHint: 'إذا احتجت مساعدة اضغط زر التلميح 💡',
+      got: (t, m) => `جمعت ${t} ⭐ من ${m}`,
+      needMore: n => `تحتاج ${n} نجوم على الأقل لتنتقل إلى الولاية التالية. هيّا نحاول مرة أخرى!`,
+      again: 'حاول مرة أخرى 🔁', later: 'لاحقاً',
+      flagOf: n => 'علم ولاية ' + n, emblemOf: n => 'شعار ولاية ' + n, tapEnlarge: ' — اضغط لتكبيره',
+      stateFlag: 'علم الولاية', stateEmblem: 'شعار الولاية', review: 'للمراجعة',
+      newCard: '🎉 بطاقة جديدة في ألبومك!', getBadge: 'استلم الشارة 🎖️', nextStop: 'إلى المحطة التالية 🚙',
+      photosOf: n => `📸 صور من ${n}`, tapPhoto: 'اضغط على الصورة لتكبيرها',
+      albumTitle: '📒 ألبوم الرحلة', backToMap: 'رجوع إلى الخريطة',
+      congrats: t => `مبروك! أكملت ${t}`, earned: b => `حصلت على «${b}»`, outOf: (a, b) => `⭐ ${a} من ${b}`,
+      proud: last => 'أنا فخور بك! ' + (last ? 'بقيت لك مفاجأة أخيرة...' : 'رحلتنا مستمرة!'),
+      getMedal: 'استلم الوسام 🏅', cont: 'متابعة',
+      champ: g => `أنت بطل ${g}!`, medalFor: (m, c) => `حصلت على «${m}»<br>لأنك زرت كل مناطق ${c}`,
+      returnMap: 'العودة إلى الخريطة', playAgain: '↺ العب من جديد'
+    },
+    en: {
+      dir: 'ltr', ages: ['Ages 6 – 8', 'Ages 9 – 13'],
+      fields: { capital: 'Capital', cities: 'Main cities', landmarks: 'Top landmarks', history: 'From history', fact: 'Amazing fact' },
+      cheers: ['Well done!', 'Excellent!', 'Brilliant!', 'You’re a star!', 'That’s right!'],
+      hello: g => `Hi! I’m ${g} 👋<br>Let’s travel together and discover our country!`,
+      saved: n => `Your journey is saved: ${n} ⭐ — choose your age to carry on`,
+      howOld: 'How old are you?', soundOff: '🔇 Sound off', soundOn: '🔊 Sound on', restart: '↺ Start over',
+      resetQ: 'Do you want to start over?', resetNote: 'Your stars and cards will be reset.',
+      resetNo: 'No, carry on with my journey', resetYes: 'Yes, start over',
+      mapOf: c => `Map of ${c}`, fullMap: c => `Full map of ${c}`, close: 'Close', back: 'Back',
+      tapUnit: u => `Tap any ${u.toLowerCase()} to see its name! 👆`,
+      thisIs: (u, n) => `This is <b>${n}</b> ${u}`,
+      visited: n => ` — we visited it together ⭐ ${n}`, willVisit: t => ` — we’ll visit it on the ${t} 🚙`, soonIn: t => ` — part of the ${t}, coming soon! 🔒`,
+      soon: 'Coming soon!', chipSoon: '· Soon',
+      tapCur: n => `Tap the glowing “${n}” to answer its questions!`,
+      allHero: 'You’re a hero! You’ve finished every journey 🏅 Tap any stop to see its card.',
+      tripFinished: 'You’ve finished this journey! Choose your next one at the top.',
+      allAvail: 'Well done! You’ve finished all the journeys so far 🎉 New ones are coming soon.',
+      home: 'Home', album: 'Travel album', sound: 'Sound',
+      tripLocked: 'This journey opens soon! 🔒', notYet: 'We haven’t got here yet 😊 Tap the glowing stop!',
+      drive: n => `Let’s hop in the car and drive to “${n}” on the national highway! 🚙`, passing: n => `We’re passing through ${n} now 🏘️`,
+      qOf: (i, n) => `Question ${i} of ${n}`,
+      collect: n => `Collect at least ${n} stars to move on to the next state! 💪`,
+      think: 'Think carefully — I’m sure you know this one! 💪', wantHint: '💡 Give me a hint', hint: '💡 Hint: ',
+      defHint: 'Look carefully at each choice and think about every one.',
+      tryAgain: 'So close! Try again 😊<br>', pressHint: 'If you need help, tap the hint button 💡',
+      got: (t, m) => `You collected ${t} ⭐ out of ${m}`,
+      needMore: n => `You need at least ${n} stars to move on to the next state. Let’s try again!`,
+      again: 'Try again 🔁', later: 'Later',
+      flagOf: n => 'Flag of ' + n + ' State', emblemOf: n => 'Emblem of ' + n + ' State', tapEnlarge: ' — tap to enlarge',
+      stateFlag: 'State flag', stateEmblem: 'State emblem', review: 'To review',
+      newCard: '🎉 A new card for your album!', getBadge: 'Collect your badge 🎖️', nextStop: 'On to the next stop 🚙',
+      photosOf: n => `📸 Photos from ${n}`, tapPhoto: 'Tap a photo to enlarge it',
+      albumTitle: '📒 Travel album', backToMap: 'Back to the map',
+      congrats: t => `Congratulations! You finished the ${t}`, earned: b => `You earned the “${b}”`, outOf: (a, b) => `⭐ ${a} out of ${b}`,
+      proud: last => 'I’m so proud of you! ' + (last ? 'One last surprise is waiting for you...' : 'Our journey continues!'),
+      getMedal: 'Collect your medal 🏅', cont: 'Continue',
+      champ: g => `You’re a ${g} champion!`, medalFor: (m, c) => `You earned the “${m}”<br>for visiting every part of ${c}`,
+      returnMap: 'Back to the map', playAgain: '↺ Play again'
+    },
+    fr: {
+      dir: 'ltr', ages: ['6 – 8 ans', '9 – 13 ans'],
+      fields: { capital: 'Capitale', cities: 'Villes principales', landmarks: 'Sites remarquables', history: 'Un peu d’histoire', fact: 'Le savais-tu ?' },
+      cheers: ['Bravo !', 'Excellent !', 'Génial !', 'Tu es une star !', 'Bonne réponse !'],
+      hello: g => `Bonjour ! Je suis ${g} 👋<br>Viens, partons ensemble à la découverte de notre pays !`,
+      saved: n => `Ton voyage est sauvegardé : ${n} ⭐ — choisis ton âge pour continuer`,
+      howOld: 'Quel âge as-tu ?', soundOff: '🔇 Son coupé', soundOn: '🔊 Son activé', restart: '↺ Recommencer',
+      resetQ: 'Tu veux recommencer depuis le début ?', resetNote: 'Tes étoiles et tes cartes seront remises à zéro.',
+      resetNo: 'Non, je continue mon voyage', resetYes: 'Oui, recommencer',
+      mapOf: c => `Carte du ${c}`, fullMap: c => `Carte complète du ${c}`, close: 'Fermer', back: 'Retour',
+      tapUnit: u => `Touche un ${u} pour découvrir son nom ! 👆`,
+      thisIs: (u, n) => `Voici <b>« ${n} »</b>`,
+      visited: n => ` — nous l’avons visité ensemble ⭐ ${n}`, willVisit: t => ` — nous le visiterons pendant le « ${t} » 🚙`, soonIn: t => ` — il fait partie du « ${t} », bientôt ! 🔒`,
+      soon: 'Bientôt !', chipSoon: '· bientôt',
+      tapCur: n => `Touche « ${n} », qui clignote, pour répondre à ses questions !`,
+      allHero: 'Bravo, tu as terminé tous les voyages ! 🏅 Touche une étape pour revoir sa carte.',
+      tripFinished: 'Tu as terminé ce voyage ! Choisis le suivant en haut de l’écran.',
+      allAvail: 'Bravo ! Tu as terminé tous les voyages disponibles 🎉 De nouveaux voyages arrivent bientôt.',
+      home: 'Accueil', album: 'Album du voyage', sound: 'Son',
+      tripLocked: 'Ce voyage s’ouvrira bientôt ! 🔒', notYet: 'Nous ne sommes pas encore arrivés ici 😊 Touche l’étape qui clignote !',
+      drive: n => `En voiture ! Direction « ${n} » par la route nationale 🚙`, passing: n => `Nous traversons la ville de ${n} 🏘️`,
+      qOf: (i, n) => `Question ${i} sur ${n}`,
+      collect: n => `Gagne au moins ${n} étoiles pour passer à l’État suivant ! 💪`,
+      think: 'Réfléchis bien, je suis sûr que tu connais la réponse ! 💪', wantHint: '💡 Je veux un indice', hint: '💡 Indice : ',
+      defHint: 'Regarde bien chaque réponse et réfléchis à chacune d’elles.',
+      tryAgain: 'Presque ! Essaie encore 😊<br>', pressHint: 'Si tu as besoin d’aide, touche le bouton « Indice » 💡',
+      got: (t, m) => `Tu as gagné ${t} ⭐ sur ${m}`,
+      needMore: n => `Il te faut au moins ${n} étoiles pour passer à l’État suivant. Allez, on réessaie !`,
+      again: 'Réessayer 🔁', later: 'Plus tard',
+      flagOf: n => 'Drapeau de l’État : ' + n, emblemOf: n => 'Emblème de l’État : ' + n, tapEnlarge: ' — touche pour agrandir',
+      stateFlag: 'Drapeau de l’État', stateEmblem: 'Emblème de l’État', review: 'À vérifier',
+      newCard: '🎉 Nouvelle carte dans ton album !', getBadge: 'Recevoir l’insigne 🎖️', nextStop: 'Vers l’étape suivante 🚙',
+      photosOf: n => `📸 En images : ${n}`, tapPhoto: 'Touche une image pour l’agrandir',
+      albumTitle: '📒 Album du voyage', backToMap: 'Retour à la carte',
+      congrats: t => `Félicitations ! Tu as terminé le « ${t} »`, earned: b => `Tu as gagné l’« ${b} »`, outOf: (a, b) => `⭐ ${a} sur ${b}`,
+      proud: last => 'Je suis fier de toi ! ' + (last ? 'Une dernière surprise t’attend…' : 'Notre voyage continue !'),
+      getMedal: 'Recevoir la médaille 🏅', cont: 'Continuer',
+      champ: g => `Tu es une star de ${g} !`, medalFor: (m, c) => `Tu as gagné la « ${m} »<br>parce que tu as visité tous les États du ${c}`,
+      returnMap: 'Retour à la carte', playAgain: '↺ Rejouer'
+    }
+  };
+  let L = UI.ar;
+
   const AGES = [
-    { id: 'young', label: '6 – 8 سنوات', emoji: '🐣' },
-    { id: 'older', label: '9 – 13 سنة', emoji: '🚀' }
+    { id: 'young', emoji: '🐣' },
+    { id: 'older', emoji: '🚀' }
   ];
-  const CARD_FIELDS = [
-    ['capital', '🏛️', 'العاصمة'], ['cities', '🏘️', 'أشهر المدن'], ['landmarks', '📍', 'أبرز المعالم'],
-    ['history', '📜', 'من التاريخ']
-  ];
-  const FACT_FIELD = ['fact', '💡', 'معلومة مدهشة'];
-  const CHEERS = ['أحسنت!', 'ممتاز!', 'رائع!', 'يا لك من بطل!', 'إجابة صحيحة!'];
+  const CARD_FIELDS = [['capital', '🏛️'], ['cities', '🏘️'], ['landmarks', '📍'], ['history', '📜']];
+  const FACT_FIELD = ['fact', '💡'];
+
+  // دمج الترجمة فوق الأصل: الكائنات حقلاً بحقل، والمصفوفات عنصراً بعنصر
+  function merge(base, tr) {
+    if (tr === undefined || tr === null) return base;
+    if (Array.isArray(base) && Array.isArray(tr)) return base.map((b, i) => merge(b, tr[i]));
+    if (base && typeof base === 'object' && typeof tr === 'object' && !Array.isArray(tr)) {
+      const out = Object.assign({}, base);
+      Object.keys(tr).forEach(k => { out[k] = merge(base[k], tr[k]); });
+      return out;
+    }
+    return tr;
+  }
+  const LANGS = ['ar', 'en', 'fr'];
+  // اسم كل لغة بلغتها، والاختصار، ونص زر التبديل إليها
+  const LANG_META = {
+    ar: { name: 'العربية', short: 'ع', aria: 'التبديل إلى العربية' },
+    en: { name: 'English', short: 'EN', aria: 'Switch to English' },
+    fr: { name: 'Français', short: 'FR', aria: 'Passer en français' }
+  };
+  const nextLang = () => LANGS[(LANGS.indexOf(state.lang) + 1) % LANGS.length];
+  function applyLang(lang) {
+    const tr = lang !== 'ar' && TRANSLATIONS[lang];
+    L = UI[lang] || UI.ar;
+    P = tr ? merge(COUNTRY_PACK, tr.pack) : COUNTRY_PACK;
+    S = tr ? merge(SHARED_QUESTIONS, tr.shared) : SHARED_QUESTIONS;
+    M = P.map && P.map.shapes ? P.map : null;
+    document.documentElement.lang = tr ? lang : 'ar';
+    document.documentElement.dir = L.dir;
+    document.title = P.gameName + (lang === 'fr' ? ' : ' : ': ') + P.countryName;
+  }
+  const townName = n => (P.towns && P.towns[n]) || n;
+  const creditText = s => { let t = String(s || ''); const m = P.credits || {}; Object.keys(m).forEach(k => { t = t.split(k).join(m[k]); }); return t; };
 
   /* ---------- أدوات ---------- */
   const $ = (sel, root) => (root || document).querySelector(sel);
@@ -1109,8 +2406,8 @@ const SHARED_QUESTIONS = {
   const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const starsText = n => '⭐'.repeat(n);
-  const emblemTitle = r => (r.emblem && r.emblem.kind === 'flag' ? 'علم ولاية ' : 'شعار ولاية ') + T(r.name);
-  const revTag = () => SETTINGS.showReviewTags ? '<span class="rev">للمراجعة</span>' : '';
+  const emblemTitle = r => (r.emblem && r.emblem.kind === 'flag' ? L.flagOf : L.emblemOf)(T(r.name));
+  const revTag = () => SETTINGS.showReviewTags ? `<span class="rev">${L.review}</span>` : '';
   // صورة إن وُجدت، وإلا إيموجي
   const src = v => (P.images && P.images[v]) || v;
   const art = o => o && o.image ? `<img src="${escRaw(src(o.image))}" alt="">` : escRaw((o && o.emoji) || '⭐');
@@ -1126,13 +2423,14 @@ const SHARED_QUESTIONS = {
   };
   const QUIZ = { perRegion: 3, passStars: 5 };
   const MAX_STARS = QUIZ.perRegion * 3;   // كل سؤال: 3 نجوم من أول محاولة، 2 من الثانية، 1 من الثالثة
-  const freshState = () => ({ age: null, done: {}, muted: false });
+  const freshState = () => ({ age: null, done: {}, muted: false, lang: 'ar' });
   let state = freshState();
   (function restore() {
     const s = Store.load();
     if (!s || typeof s !== 'object') return;
     if (AGES.some(a => a.id === s.age)) state.age = s.age;
     state.muted = !!s.muted;
+    if (LANGS.indexOf(s.lang) >= 0) state.lang = s.lang;
     if (s.done && typeof s.done === 'object') {
       Object.keys(s.done).forEach(id => {
         const n = Number(s.done[id]);
@@ -1216,21 +2514,30 @@ const SHARED_QUESTIONS = {
       </div>
       <div>
         <div class="bob" style="display:inline-block">${guideAvatar('big')}</div>
-        <div class="bubble">مرحباً! أنا ${T(P.guide.name)} 👋<br>هيّا نسافر معاً ونتعرّف على بلادنا!</div>
+        <div class="bubble">${L.hello(T(P.guide.name))}</div>
       </div>
       <div class="ages">
-        ${hasProgress() ? `<p class="saved">رحلتك محفوظة: ${T(totalStars())} ⭐ — اختر عمرك لتكمل</p>` : `<h2>كم عمرك؟</h2>`}
-        ${AGES.map((a, i) => `<button class="btn ${i ? 'sun' : ''}" data-age="${a.id}"><span>${a.emoji}</span><span>${T(a.label)}</span></button>`).join('')}
-        <div style="display:flex;justify-content:center;gap:6px">
-          <button class="link-btn" id="mute">${state.muted ? '🔇 الصوت مغلق' : '🔊 الصوت يعمل'}</button>
-          ${hasProgress() ? '<button class="link-btn" id="reset">↺ ابدأ من جديد</button>' : ''}
+        ${hasProgress() ? `<p class="saved">${L.saved(T(totalStars()))}</p>` : `<h2>${L.howOld}</h2>`}
+        ${AGES.map((a, i) => `<button class="btn ${i ? 'sun' : ''}" data-age="${a.id}"><span>${a.emoji}</span><span>${T(L.ages[i])}</span></button>`).join('')}
+        <div style="display:flex;justify-content:center;flex-wrap:wrap;column-gap:6px">
+          <span class="langs" role="group" aria-label="Language">🌐 ${LANGS.map(l => `<button class="link-btn lang-opt${l === state.lang ? ' on' : ''}" data-lang="${l}" lang="${l}" aria-pressed="${l === state.lang}">${LANG_META[l].name}</button>`).join('')}</span>
+          <button class="link-btn" id="mute">${state.muted ? L.soundOff : L.soundOn}</button>
+          ${hasProgress() ? `<button class="link-btn" id="reset">${L.restart}</button>` : ''}
         </div>
       </div>`;
     screenEl.querySelectorAll('[data-age]').forEach(b => b.addEventListener('click', () => {
       state.age = b.dataset.age; save(); Sound.play('tap'); viewTrip = null; showMap();
     }));
+    screenEl.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => {
+      if (b.dataset.lang !== state.lang) { switchLang(b.dataset.lang); showStart(); }
+    }));
     on('#mute', () => { state.muted = !state.muted; save(); Sound.play('tap'); showStart(); });
     on('#reset', confirmReset);
+  }
+
+  function switchLang(to) {
+    state.lang = LANGS.indexOf(to) >= 0 ? to : nextLang();
+    save(); Sound.play('tap'); applyLang(state.lang);
   }
 
   function confirmReset() {
@@ -1238,19 +2545,19 @@ const SHARED_QUESTIONS = {
     openOverlay(`
       <div class="modal" style="text-align:center">
         <div style="font-size:3rem">🤔</div>
-        <div class="qtext" style="margin-top:0">هل تريد أن تبدأ من جديد؟</div>
-        <p style="margin:0 0 14px;font-weight:700">ستعود النجوم والبطاقات إلى البداية.</p>
+        <div class="qtext" style="margin-top:0">${L.resetQ}</div>
+        <p style="margin:0 0 14px;font-weight:700">${L.resetNote}</p>
         <div class="opts">
-          <button class="btn soft" id="no">لا، أكمل رحلتي</button>
-          <button class="btn sun small" id="yes">نعم، ابدأ من جديد</button>
+          <button class="btn soft" id="no">${L.resetNo}</button>
+          <button class="btn sun small" id="yes">${L.resetYes}</button>
         </div>
       </div>`);
     on('#no', () => { Sound.play('tap'); closeOverlay(); });
-    on('#yes', () => { const muted = state.muted; Store.clear(); state = freshState(); state.muted = muted; save(); asked.clear(); viewTrip = null; Sound.play('tap'); showStart(); });
+    on('#yes', () => { const muted = state.muted, lang = state.lang; Store.clear(); state = freshState(); state.muted = muted; state.lang = lang; save(); asked.clear(); viewTrip = null; Sound.play('tap'); showStart(); });
   }
 
   /* =================== خريطة الدولة =================== */
-  const M = P.map && P.map.shapes ? P.map : null;     // بلا خريطة؟ تعمل اللعبة بالمحطات فقط
+  let M = P.map && P.map.shapes ? P.map : null;     // بلا خريطة؟ تعمل اللعبة بالمحطات فقط
   const shapeName = id => (P.regions[id] && P.regions[id].name) || (M && M.shapes[id] && M.shapes[id].name) || '';
   const tripOfShape = id => P.trips.find(t => t.regions.indexOf(id) >= 0 || (t.area || []).indexOf(id) >= 0);
   // يرسم أشكال الخريطة. cls(id) تعيد أصناف CSS للشكل، والأشكال في top تُرسم أخيراً لتظهر حدودها.
@@ -1266,14 +2573,14 @@ const SHARED_QUESTIONS = {
     openOverlay(`
       <div class="modal">
         <div class="modal-head">
-          <span class="tag">🗺️ خريطة ${T(P.countryName)}</span>
-          <span class="spacer"></span><button class="x" id="close" aria-label="إغلاق">✕</button>
+          <span class="tag">🗺️ ${L.mapOf(T(P.countryName))}</span>
+          <span class="spacer"></span><button class="x" id="close" aria-label="${L.close}">✕</button>
         </div>
-        <div class="bigmap"><svg viewBox="${escRaw(M.view.join(' '))}" role="img" aria-label="خريطة ${T(P.countryName)}">
+        <div class="bigmap"><svg viewBox="${escRaw(M.view.join(' '))}" role="img" aria-label="${L.mapOf(T(P.countryName))}">
           ${landPaths(id => 'tap ' + (state.done[id] ? 'done' : hot.indexOf(id) >= 0 ? 'in' : ''), hot)}
         </svg></div>
-        <div class="talk">${guideAvatar()}<div class="bubble" id="mapsay">اضغط على أي ${T(M.unit || 'منطقة')} لتعرف اسمها! 👆</div></div>
-        <button class="btn soft small" id="close2" style="margin-top:12px">رجوع</button>
+        <div class="talk">${guideAvatar()}<div class="bubble" id="mapsay">${L.tapUnit(T(M.unit || ''))}</div></div>
+        <button class="btn soft small" id="close2" style="margin-top:12px">${L.back}</button>
       </div>`);
     on('#close', () => { Sound.play('tap'); closeOverlay(); });
     on('#close2', () => { Sound.play('tap'); closeOverlay(); });
@@ -1283,10 +2590,10 @@ const SHARED_QUESTIONS = {
       Sound.play('tap');
       overlayEl.querySelectorAll('.land.sel').forEach(x => x.classList.remove('sel'));
       p.classList.add('sel'); p.parentNode.appendChild(p);      // إلى الأعلى ليظهر إطارها كاملاً
-      let txt = `هذه ${T(M.unit || '')} <b>«${T(shapeName(id))}»</b>`;
-      if (state.done[id]) txt += ` — زرناها معاً ⭐ ${T(state.done[id])}`;
-      else if (P.regions[id] && t) txt += ` — سنزورها في ${T(t.name)} 🚙`;
-      else if (t) txt += ` — من ${T(t.name)}، قريباً! 🔒`;
+      let txt = L.thisIs(T(M.unit || ''), T(shapeName(id)));
+      if (state.done[id]) txt += L.visited(T(state.done[id]));
+      else if (P.regions[id] && t) txt += L.willVisit(T(t.name));
+      else if (t) txt += L.soonIn(T(t.name));
       sayEl.innerHTML = txt; sayEl.classList.remove('pop'); void sayEl.offsetWidth; sayEl.classList.add('pop');
     }));
   }
@@ -1304,7 +2611,7 @@ const SHARED_QUESTIONS = {
     closeOverlay();
     const cur = currentRegion();
     const playable = playableTrips();
-    if (!playable.length) { screenEl.className = 'screen reward'; screenEl.innerHTML = '<h1>قريباً!</h1>'; return; }
+    if (!playable.length) { screenEl.className = 'screen reward'; screenEl.innerHTML = `<h1>${L.soon}</h1>`; return; }
     let trip = P.trips.find(t => t.id === viewTrip && tripUnlocked(t));
     if (!trip) trip = (cur && tripOf(cur)) || playable[playable.length - 1];
     viewTrip = trip.id;
@@ -1327,24 +2634,25 @@ const SHARED_QUESTIONS = {
     ids.forEach((id, i) => { if (i) ((roadOf(ids[i - 1], id) || {}).via || []).forEach(v => { if (v[2] && !towns.some(t => t[2] === v[2])) towns.push(v); }); });
 
     let say;
-    if (curInTrip) say = `اضغط على «${T(P.regions[curInTrip].name)}» التي تنبض لنجيب عن سؤالها!`;
-    else if (allDone()) say = 'أنت بطل! أكملت كل الرحلات 🏅 اضغط على أي محطة لترى بطاقتها.';
-    else if (cur) say = 'أكملت هذه الرحلة! انتقل إلى رحلتك التالية من الأعلى.';
-    else say = 'أحسنت! أكملت كل الرحلات المتاحة 🎉 رحلات جديدة قادمة قريباً.';
+    if (curInTrip) say = L.tapCur(T(P.regions[curInTrip].name));
+    else if (allDone()) say = L.allHero;
+    else if (cur) say = L.tripFinished;
+    else say = L.allAvail;
 
     screenEl.className = 'screen';
     screenEl.innerHTML = `
       <div class="topbar">
-        <button class="icon-btn" id="home" aria-label="الرئيسية">🏠</button>
+        <button class="icon-btn" id="home" aria-label="${L.home}">🏠</button>
         <div class="stars-pill"><span>⭐</span><span>${T(totalStars())}</span></div>
-        <button class="icon-btn" id="album" aria-label="ألبوم الرحلة">📒</button>
-        <button class="icon-btn" id="mute" aria-label="الصوت">${state.muted ? '🔇' : '🔊'}</button>
+        <button class="icon-btn" id="album" aria-label="${L.album}">📒</button>
+        <button class="icon-btn" id="mute" aria-label="${L.sound}">${state.muted ? '🔇' : '🔊'}</button>
+        <button class="icon-btn" id="lang" lang="${nextLang()}" aria-label="${LANG_META[nextLang()].aria}" style="font-size:1.05rem;font-weight:900">${LANG_META[nextLang()].short}</button>
       </div>
       <div class="trips">
         ${P.trips.map(t => {
           const open = tripUnlocked(t);
           const mark = tripDone(t) ? art(t.badge) : (open ? '' : '🔒');
-          return `<button class="chip ${t.id === trip.id ? 'on' : ''} ${open ? '' : 'locked'}" data-trip="${escRaw(t.id)}" ${open ? '' : 'data-locked="1"'}>${T(t.name)} ${t.regions.length ? mark : '· قريباً'}</button>`;
+          return `<button class="chip ${t.id === trip.id ? 'on' : ''} ${open ? '' : 'locked'}" data-trip="${escRaw(t.id)}" ${open ? '' : 'data-locked="1"'}>${T(t.name)} ${t.regions.length ? mark : L.chipSoon}</button>`;
         }).join('')}
       </div>
       <div class="map ${M ? 'geo' : ''}" id="map">
@@ -1355,7 +2663,7 @@ const SHARED_QUESTIONS = {
           <polyline class="road-dash" points="${pts(roadPath)}"/>
           <polyline class="road-done" id="roadDone" points="${pts(donePath)}"/>
         </svg>
-        ${towns.map((v, i) => `<span class="town" data-t="${i}"><b>${T(v[2])}</b></span>`).join('')}
+        ${towns.map((v, i) => `<span class="town" data-t="${i}"><b>${T(townName(v[2]))}</b></span>`).join('')}
         ${ids.map(id => {
           const r = P.regions[id], d = state.done[id];
           const cls = d ? 'done' : (id === curInTrip && !opts.travelFrom ? 'cur' : '');
@@ -1367,7 +2675,7 @@ const SHARED_QUESTIONS = {
         }).join('')}
         <div class="pin" id="pin">${guideAvatar()}<span class="car" aria-hidden="true">🚙</span></div>
         </div></div>
-        ${M ? `<button class="mini" id="mini" aria-label="خريطة ${T(P.countryName)} كاملة"><svg viewBox="${escRaw(M.view.join(' '))}" aria-hidden="true">${landPaths(id => ids.indexOf(id) >= 0 ? 'hot' : '', ids)}</svg><i>🔍</i></button>` : ''}
+        ${M ? `<button class="mini" id="mini" aria-label="${L.fullMap(T(P.countryName))}"><svg viewBox="${escRaw(M.view.join(' '))}" aria-hidden="true">${landPaths(id => ids.indexOf(id) >= 0 ? 'hot' : '', ids)}</svg><i>🔍</i></button>` : ''}
       </div>
       <div class="talk map-talk">${guideAvatar()}<div class="bubble" id="say">${say}</div></div>`;
 
@@ -1449,9 +2757,10 @@ const SHARED_QUESTIONS = {
     on('#album', () => { Sound.play('tap'); showAlbum(); });
     on('#mini', () => { Sound.play('tap'); showCountryMap(ids); });
     on('#mute', () => { state.muted = !state.muted; save(); Sound.play('tap'); $('#mute').textContent = state.muted ? '🔇' : '🔊'; });
+    on('#lang', () => { switchLang(); showMap(); });
     screenEl.querySelectorAll('[data-trip]').forEach(b => b.addEventListener('click', () => {
       Sound.play('tap');
-      if (b.dataset.locked) { speak('هذه الرحلة ستفتح قريباً! 🔒'); return; }
+      if (b.dataset.locked) { speak(L.tripLocked); return; }
       viewTrip = b.dataset.trip; showMap();
     }));
     const stationOf = id => screenEl.querySelector('.station[data-id="' + id + '"]');
@@ -1462,7 +2771,7 @@ const SHARED_QUESTIONS = {
       else {
         Sound.play('tap');
         if (b) { b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope'); }
-        speak('لم نصل إلى هنا بعد 😊 اضغط على المحطة التي تنبض!');
+        speak(L.notYet);
       }
     };
     screenEl.querySelectorAll('.station').forEach(b => b.addEventListener('click', () => tapRegion(b.dataset.id)));
@@ -1474,7 +2783,7 @@ const SHARED_QUESTIONS = {
       const pin = $('#pin'), doneEl = $('#roadDone');
       const road = roadOf(opts.travelFrom, curInTrip), leg = legPts(opts.travelFrom, curInTrip);
       const base = donePath.length ? donePath.slice(0, -1) : [];   // الطريق المقطوع قبل هذه المرحلة
-      speak(`هيّا نركب السيارة إلى «${T(P.regions[curInTrip].name)}» على الطريق القومي! 🚙` +
+      speak(L.drive(T(P.regions[curInTrip].name)) +
         (road && road.name ? `<br><small>${T(road.name)}</small>` : ''));
       const arrive = () => {
         driving = false; pinId = curInTrip; pinPt = xy(curInTrip);
@@ -1515,7 +2824,7 @@ const SHARED_QUESTIONS = {
           }
           // نعلن عن المدينة التي نمرّ بها
           const town = i > 0 && i < leg.length - 1 ? towns.findIndex(t => t[2] === leg[i][2]) : -1;
-          if (town >= 0 && town !== lastTown && townShown[town]) { lastTown = town; speak(`نمرّ الآن بمدينة «${T(towns[town][2])}» 🏘️`); }
+          if (town >= 0 && town !== lastTown && townShown[town]) { lastTown = town; speak(L.passing(T(townName(towns[town][2])))); }
           if (k < 1) driveFrame = requestAnimationFrame(frame); else arrive();
         };
         driveFrame = requestAnimationFrame(frame);
@@ -1559,25 +2868,25 @@ const SHARED_QUESTIONS = {
             <span class="tag">${escRaw(r.emoji || '📍')} ${T(r.name)}</span>
             <span class="tag">${T(q.label)}</span>${q.review ? revTag() : ''}
             <span class="spacer"></span>
-            <button class="x" id="close" aria-label="إغلاق">✕</button>
+            <button class="x" id="close" aria-label="${L.close}">✕</button>
           </div>
           <div class="qprog">
-            <span>سؤال ${T(idx + 1)} من ${T(qs.length)}</span>
+            <span>${L.qOf(T(idx + 1), T(qs.length))}</span>
             <span class="dots">${qs.map((_, i) => `<i class="${i < idx ? 'done' : i === idx ? 'now' : ''}"></i>`).join('')}</span>
             <span>⭐ ${T(total)} / ${T(need)}</span>
           </div>
           <div class="qtext">${T(q.q)}</div>
           <div class="opts">${options.map((o, i) => `<button class="opt" data-i="${i}">${T(o)}</button>`).join('')}</div>
           <div class="won-stars" id="won"></div>
-          <div class="talk">${guideAvatar()}<div class="bubble" id="hint">${idx === 0 ? `اجمع ${T(need)} نجوم على الأقل لتنتقل إلى الولاية التالية! 💪` : 'فكّر جيداً، أنا واثق أنك تعرف! 💪'}</div></div>
-          <div style="text-align:center;margin-top:10px"><button class="btn soft small" id="askHint">💡 أريد تلميحاً</button></div>
+          <div class="talk">${guideAvatar()}<div class="bubble" id="hint">${idx === 0 ? L.collect(T(need)) : L.think}</div></div>
+          <div style="text-align:center;margin-top:10px"><button class="btn soft small" id="askHint">${L.wantHint}</button></div>
         </div>`);
 
       on('#askHint', () => {
         if (locked) return;
         Sound.play('tap');
         const hint = $('#hint');
-        hint.innerHTML = '💡 تلميح: ' + T(q.hint || 'انظر إلى الاختيارات جيداً وفكّر في كل واحد منها.');
+        hint.innerHTML = L.hint + T(q.hint || L.defHint);
         hint.classList.remove('pop'); void hint.offsetWidth; hint.classList.add('pop');
         $('#askHint').style.display = 'none';
       });
@@ -1594,7 +2903,7 @@ const SHARED_QUESTIONS = {
           b.classList.add('right');
           Sound.play('right'); confetti();
           $('#won').innerHTML = Array.from({ length: stars }, (_, i) => `<span style="animation-delay:${i * .15}s">⭐</span>`).join('');
-          hint.textContent = pick(CHEERS) + ' 🎉';
+          hint.textContent = pick(L.cheers) + ' 🎉';
           hint.classList.remove('pop'); void hint.offsetWidth; hint.classList.add('pop');
           setTimeout(() => {
             idx++;
@@ -1606,9 +2915,7 @@ const SHARED_QUESTIONS = {
           b.classList.add('wrong');
           Sound.play('wrong');
           const hintShown = $('#askHint').style.display === 'none';
-          hint.innerHTML = 'قريب جداً! جرّب مرة أخرى 😊<br>' + (hintShown
-            ? '💡 تلميح: ' + T(q.hint || 'انظر إلى الاختيارات جيداً وفكّر في كل واحد منها.')
-            : 'إذا احتجت مساعدة اضغط زر التلميح 💡');
+          hint.innerHTML = L.tryAgain + (hintShown ? L.hint + T(q.hint || L.defHint) : L.pressHint);
           hint.classList.remove('pop'); void hint.offsetWidth; hint.classList.add('pop');
         }
       }));
@@ -1620,11 +2927,11 @@ const SHARED_QUESTIONS = {
       openOverlay(`
         <div class="modal" style="text-align:center">
           <div style="font-size:3rem">🙂</div>
-          <div class="qtext" style="margin-top:0">جمعت ${T(total)} ⭐ من ${T(qs.length * 3)}</div>
-          <p style="margin:0 0 14px;font-weight:700">تحتاج ${T(need)} نجوم على الأقل لتنتقل إلى الولاية التالية. هيّا نحاول مرة أخرى!</p>
+          <div class="qtext" style="margin-top:0">${L.got(T(total), T(qs.length * 3))}</div>
+          <p style="margin:0 0 14px;font-weight:700">${L.needMore(T(need))}</p>
           <div class="opts">
-            <button class="btn sun" id="again">حاول مرة أخرى 🔁</button>
-            <button class="btn soft small" id="later">لاحقاً</button>
+            <button class="btn sun" id="again">${L.again}</button>
+            <button class="btn soft small" id="later">${L.later}</button>
           </div>
         </div>`);
       on('#again', () => { Sound.play('tap'); openQuestion(regionId); });
@@ -1645,7 +2952,7 @@ const SHARED_QUESTIONS = {
   /* =================== بطاقة المنطقة =================== */
   const cardRow = (f, c, rev) => `
     <div class="row ${f[0] === 'fact' ? 'fact' : ''}"><span class="ic">${f[1]}</span>
-      <div><b>${f[2]}${rev.indexOf(f[0]) >= 0 ? revTag() : ''}</b>${T(c[f[0]])}</div></div>`;
+      <div><b>${L.fields[f[0]]}${rev.indexOf(f[0]) >= 0 ? revTag() : ''}</b>${T(c[f[0]])}</div></div>`;
 
   // عارض الصورة بالحجم الكبير (فوق البطاقة، يُغلق بأي ضغطة)
   function showPhoto(g) {
@@ -1656,9 +2963,9 @@ const SHARED_QUESTIONS = {
     box.innerHTML = `
       <figure>
         <img src="${escRaw(src(g.img))}" alt="${T(g.title)}"${g.pad ? ' class="pad"' : ''}>
-        <figcaption>${T(g.title)}${g.note ? `<p class="note">📜 ${T(g.note)}</p>` : ''}<small>📷 ${escRaw(g.credit || '')}</small></figcaption>
+        <figcaption>${T(g.title)}${g.note ? `<p class="note">📜 ${T(g.note)}</p>` : ''}<small>📷 ${escRaw(creditText(g.credit))}</small></figcaption>
       </figure>
-      <button class="x" aria-label="إغلاق">✕</button>`;
+      <button class="x" aria-label="${L.close}">✕</button>`;
     const close = () => { box.remove(); document.removeEventListener('keydown', esc); };
     const esc = e => { if (e.key === 'Escape') close(); };
     box.addEventListener('click', () => { Sound.play('tap'); close(); });
@@ -1670,21 +2977,21 @@ const SHARED_QUESTIONS = {
     const r = P.regions[regionId], c = r.card || {}, rev = c.review || [];
     const trip = tripOf(regionId);
     const tripJustDone = isNew && trip && tripDone(trip);
-    const nextLabel = !isNew ? 'رجوع' : tripJustDone ? 'استلم الشارة 🎖️' : 'إلى المحطة التالية 🚙';
+    const nextLabel = !isNew ? L.back : tripJustDone ? L.getBadge : L.nextStop;
     openOverlay(`
       <div class="modal" style="--c:${escRaw(r.color || '#ffd')}">
-        ${isNew ? '<div style="text-align:center;font-weight:900;color:var(--primary-dark)">🎉 بطاقة جديدة في ألبومك!</div>' : ''}
+        ${isNew ? `<div style="text-align:center;font-weight:900;color:var(--primary-dark)">${L.newCard}</div>` : ''}
         <div class="photo${!r.photo && r.emblem ? ' emoji-em' : ''}">${r.photo ? `<img src="${escRaw(src(r.photo))}" alt="">` : escRaw(r.emoji || '📍')}</div>
-        ${r.emblem ? `<button class="emblem" id="emblem" aria-label="${emblemTitle(r)} — اضغط لتكبيره">
+        ${r.emblem ? `<button class="emblem" id="emblem" aria-label="${emblemTitle(r)}${L.tapEnlarge}">
           <span class="em-img"><img src="${escRaw(src(r.emblem.img))}" alt="${emblemTitle(r)}"></span>
-          <small>${r.emblem.kind === 'flag' ? 'علم الولاية' : 'شعار الولاية'}${r.emblem.review ? revTag() : ''}</small></button>` : ''}
+          <small>${r.emblem.kind === 'flag' ? L.stateFlag : L.stateEmblem}${r.emblem.review ? revTag() : ''}</small></button>` : ''}
         <h2 class="card-name">${T(r.name)}</h2>
         <div class="card-stars">${starsText(state.done[regionId] || 0)} <small>(${T(state.done[regionId] || 0)} / ${T(MAX_STARS)})</small></div>
         <div class="rows">
           ${CARD_FIELDS.filter(f => c[f[0]]).map(f => cardRow(f, c, rev)).join('')}
         </div>
         ${(c.gallery || []).length ? `
-          <h3 class="sec gal-title">📸 صور من ${T(r.name)} <small>اضغط على الصورة لتكبيرها</small></h3>
+          <h3 class="sec gal-title">${L.photosOf(T(r.name))} <small>${L.tapPhoto}</small></h3>
           <div class="gallery">
             ${c.gallery.map((g, i) => `
               <button class="shot" data-i="${i}" aria-label="${T(g.title)}">
@@ -1716,8 +3023,8 @@ const SHARED_QUESTIONS = {
     openOverlay(`
       <div class="modal">
         <div class="modal-head">
-          <span class="tag">📒 ألبوم الرحلة</span><span class="tag">${T(got)} / ${T(ids.length)}</span>
-          <span class="spacer"></span><button class="x" id="close" aria-label="إغلاق">✕</button>
+          <span class="tag">${L.albumTitle}</span><span class="tag">${T(got)} / ${T(ids.length)}</span>
+          <span class="spacer"></span><button class="x" id="close" aria-label="${L.close}">✕</button>
         </div>
         ${playableTrips().map(t => `
           <h3 class="sec">${T(t.name)} ${tripDone(t) ? art(t.badge) : ''}</h3>
@@ -1729,7 +3036,7 @@ const SHARED_QUESTIONS = {
                 : `<div class="album-item shut"><span class="em">❓</span><span>${T(r.name)}</span></div>`;
             }).join('')}
           </div>`).join('')}
-        <button class="btn soft small" id="close2">رجوع إلى الخريطة</button>
+        <button class="btn soft small" id="close2">${L.backToMap}</button>
       </div>`);
     on('#close', () => { Sound.play('tap'); closeOverlay(); });
     on('#close2', () => { Sound.play('tap'); closeOverlay(); });
@@ -1743,11 +3050,11 @@ const SHARED_QUESTIONS = {
     screenEl.className = 'screen reward';
     screenEl.innerHTML = `
       <div class="rosette">${art(trip.badge)}</div>
-      <h1>مبروك! أكملت ${T(trip.name)}</h1>
-      <p>حصلت على «${T(trip.badge.name)}»</p>
-      <div class="big-stars">⭐ ${T(tripStars(trip))} من ${T(trip.regions.length * MAX_STARS)}</div>
-      <div class="talk" style="width:100%">${guideAvatar()}<div class="bubble">أنا فخور بك! ${allDone() ? 'بقيت لك مفاجأة أخيرة...' : 'رحلتنا مستمرة!'}</div></div>
-      <button class="btn" id="go">${allDone() ? 'استلم الوسام 🏅' : 'متابعة'}</button>`;
+      <h1>${L.congrats(T(trip.name))}</h1>
+      <p>${L.earned(T(trip.badge.name))}</p>
+      <div class="big-stars">${L.outOf(T(tripStars(trip)), T(trip.regions.length * MAX_STARS))}</div>
+      <div class="talk" style="width:100%">${guideAvatar()}<div class="bubble">${L.proud(allDone())}</div></div>
+      <button class="btn" id="go">${allDone() ? L.getMedal : L.cont}</button>`;
     on('#go', () => { Sound.play('tap'); if (allDone()) showMedal(); else { viewTrip = null; showMap(); } });
   }
 
@@ -1757,11 +3064,11 @@ const SHARED_QUESTIONS = {
     screenEl.className = 'screen reward';
     screenEl.innerHTML = `
       <div class="rosette">${art(P.medal)}</div>
-      <h1>أنت بطل ${T(P.gameName)}!</h1>
-      <p>حصلت على «${T(P.medal.name)}»<br>لأنك زرت كل مناطق ${T(P.countryName)}</p>
-      <div class="big-stars">⭐ ${T(totalStars())} من ${T(allRegionIds().length * MAX_STARS)}</div>
-      <button class="btn" id="map">العودة إلى الخريطة</button>
-      <button class="btn sun small" id="reset">↺ العب من جديد</button>`;
+      <h1>${L.champ(T(P.gameName))}</h1>
+      <p>${L.medalFor(T(P.medal.name), T(P.countryName))}</p>
+      <div class="big-stars">${L.outOf(T(totalStars()), T(allRegionIds().length * MAX_STARS))}</div>
+      <button class="btn" id="map">${L.returnMap}</button>
+      <button class="btn sun small" id="reset">${L.playAgain}</button>`;
     on('#map', () => { Sound.play('tap'); viewTrip = null; showMap(); });
     on('#reset', confirmReset);
   }
@@ -1770,7 +3077,7 @@ const SHARED_QUESTIONS = {
   (function boot() {
     const map = { primary: '--primary', primaryDark: '--primary-dark', accent: '--accent', sun: '--sun', sky1: '--sky1', sky2: '--sky2', sand: '--sand' };
     Object.keys(P.colors || {}).forEach(k => { if (map[k]) document.documentElement.style.setProperty(map[k], P.colors[k]); });
-    document.title = P.gameName + ': ' + P.countryName;
+    applyLang(state.lang);
     showStart();
   })();
 })();
